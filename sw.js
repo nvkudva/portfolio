@@ -1,6 +1,6 @@
 /* Bump on every deploy — `node scripts/release.mjs` does it for you.
    The browser re-fetches this file, sees new bytes, and installs a new worker. */
-const VERSION = 'vk-2026-09-08-12';
+const VERSION = 'vk-2026-09-08-14';
 const SHELL = [
   '/',
   '/assets/css/app.css',
@@ -10,6 +10,7 @@ const SHELL = [
   '/assets/js/shell.js',
   '/assets/css/kinetic.css',
   '/assets/js/data.js',
+  '/assets/img/portrait.jpg',
   '/assets/img/icon.svg',
   '/manifest.webmanifest',
 ];

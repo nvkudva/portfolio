@@ -41,8 +41,8 @@ export const home = () => `
         </div>
       </div>
       <div class="k-up" style="animation-delay:.6s">
-        <div class="k-frame"><span>PORTRAIT<br>PLACEHOLDER<br>3:4 · 1200×1600</span></div>
-        <div class="k-framecap">/assets/img/portrait.jpg</div>
+        <div class="k-frame"><img src="/assets/img/portrait.jpg" alt="Vijay Krishna Kudva" width="1200" height="1600" fetchpriority="high"></div>
+        <div class="k-framecap">Bangalore, 2026</div>
       </div>
     </div>
 

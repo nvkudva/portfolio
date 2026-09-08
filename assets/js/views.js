@@ -12,9 +12,9 @@ const portrait = () => `
   <div class="rise" style="animation-delay:.2s">
     <div class="portrait">
       <i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i>
-      <div class="ph">[ PORTRAIT ]<br>4:5 · 1200×1500</div>
+      <img src="/assets/img/portrait.jpg" alt="Vijay Krishna Kudva" width="1200" height="1600" fetchpriority="high">
     </div>
-    <div class="portcap">Drop a photo at<br>/assets/img/portrait.jpg</div>
+    <div class="portcap">Bangalore, 2026</div>
   </div>`;
 
 const STATUS = {
