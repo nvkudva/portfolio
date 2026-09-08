@@ -17,11 +17,18 @@ carry no QR code, because a QR pointing at nothing is worse than no QR.
 
 ## Broken — needs a redeploy
 
-**AgentOS** — `agentos-cx9.pages.dev` returns **404 at root**. The Pages
-project exists and was modified an hour before the audit, but serves nothing.
-Most likely the build output directory is wrong, or the deployment holds no
-`index.html`. Until it is fixed the card shows "Deploy broken" and links the
-URL as plain text rather than a QR.
+**AgentOS** — `agentos-cx9.pages.dev` returns **404 at root**, but the app
+itself is fine. `wrangler pages deployment list --project-name agentos` shows
+every deployment is tagged **Preview**; none is Production, so the project's
+production hostname has nothing behind it. Preview URLs such as
+`8e153e2b.agentos-cx9.pages.dev` serve the app correctly.
+
+Fix: promote a deployment to production, or set the project's production
+branch to the branch you actually deploy (`master`/`main` both have preview
+builds). Until then the card shows "Deploy broken" and links the URL as plain
+text rather than a QR — a code that scans to a 404 is worse than none.
+
+The screenshot on the card was taken from a working preview deployment.
 
 ## Not deployed — nothing to point a QR at
 

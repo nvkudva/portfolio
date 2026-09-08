@@ -4,7 +4,11 @@
   "description": "Zero-dependency PWA. No build step, no framework, no `node_modules`. Four routes rendered client-side, animated with the View Transitions API, cached by a service worker so repeat visits are instant and it works offline.",
   "main": "sw.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "shots": "node scripts/shoot.mjs",
+    "qr": "node scripts/make-qr.mjs",
+    "release": "node scripts/release.mjs",
+    "dev": "npx -y serve -l 4321 -s ."
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,7 @@
   "homepage": "https://github.com/nvkudva/portfolio#readme",
   "private": "true",
   "devDependencies": {
+    "puppeteer-core": "^25.10.0",
     "qrcode": "^1.5.4"
   }
 }
