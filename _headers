@@ -1,6 +1,14 @@
+# Asset filenames are not content-hashed, so they must never be immutable —
+# a returning browser would hold stale JS/CSS for a year and never revalidate.
+# ETags make these revalidations cheap 304s; the service worker supplies the
+# instant repeat load, not the HTTP cache.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
+/public/*
+  Cache-Control: public, max-age=0, must-revalidate
 /sw.js
   Cache-Control: no-cache
 /manifest.webmanifest
   Cache-Control: no-cache
+/
+  Cache-Control: public, max-age=0, must-revalidate

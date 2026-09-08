@@ -1,6 +1,6 @@
 /* Bump on every deploy — `node scripts/release.mjs` does it for you.
    The browser re-fetches this file, sees new bytes, and installs a new worker. */
-const VERSION = 'vk-2026-09-08-15';
+const VERSION = 'vk-2026-09-08-16';
 const SHELL = [
   '/',
   '/assets/css/app.css',
@@ -19,7 +19,12 @@ const SHELL = [
    page tells us the user accepted the update. That keeps a running tab from
    swapping its JS out mid-session. */
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)));
+  /* `reload` bypasses the HTTP cache so a new worker always installs the
+     bytes just deployed, not whatever the browser happens to be holding. */
+  e.waitUntil(
+    caches.open(VERSION).then((c) =>
+      c.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' })))),
+  );
 });
 
 self.addEventListener('message', (e) => {
@@ -51,7 +56,7 @@ self.addEventListener('fetch', (e) => {
   /* Assets: cache first, refresh in the background. */
   e.respondWith(
     caches.match(request).then((hit) => {
-      const net = fetch(request).then((res) => {
+      const net = fetch(request, { cache: 'no-cache' }).then((res) => {
         if (res.ok) caches.open(VERSION).then((c) => c.put(request, res.clone()));
         return res;
       }).catch(() => hit);
