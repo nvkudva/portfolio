@@ -1,0 +1,376 @@
+<title>Kinetic Portfolio</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800&family=Manrope:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* four lit sets: EXECUTIVE / OVERDRIVE  ×  day / night */
+:root{
+  /* EXECUTIVE · day — gallery daylight, bronze instead of champagne */
+  --void:#ECEEF1; --stage:#FFFFFF; --riser:#F6F7FA; --edge:#D9DDE5;
+  --ink:#0A0E16; --ink-2:#4B5465; --muted:#7E8798;
+  --hot:#7E5C0E;        /* bronze */
+  --hot-2:#2A3BA6;      /* indigo foil */
+  --halo:rgba(126,92,14,.13);
+  --disp:"Big Shoulders Display",Impact,sans-serif;
+  --body:"Manrope",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.19,1,.22,1);
+  --noise:.02;
+}
+/* EXECUTIVE · night — midnight & champagne */
+@media (prefers-color-scheme:dark){
+  :root:not([data-mode="light"]){
+    --void:#070A12; --stage:#0D1220; --riser:#141B2E; --edge:#1F2942;
+    --ink:#F0F2F8; --ink-2:#A9B2C9; --muted:#6B7692;
+    --hot:#E8C77A; --hot-2:#8FA6FF;
+    --halo:rgba(232,199,122,.16);
+    --noise:.035;
+  }
+}
+:root[data-mode="dark"]{
+  --void:#070A12; --stage:#0D1220; --riser:#141B2E; --edge:#1F2942;
+  --ink:#F0F2F8; --ink-2:#A9B2C9; --muted:#6B7692;
+  --hot:#E8C77A; --hot-2:#8FA6FF;
+  --halo:rgba(232,199,122,.16);
+  --noise:.035;
+}
+/* OVERDRIVE · day — the neon duo, magenta leading */
+:root[data-skin="cyber"]{
+  --void:#F2EEFA; --stage:#FFFFFF; --riser:#FAF6FF; --edge:#DED0F0;
+  --ink:#12031F; --ink-2:#452762; --muted:#7E6A96;
+  --hot:#D6008C; --hot-2:#6B00D6;
+  --halo:rgba(214,0,140,.14);
+  --noise:.03;
+}
+/* OVERDRIVE · night — lime & magenta */
+@media (prefers-color-scheme:dark){
+  :root[data-skin="cyber"]:not([data-mode="light"]){
+    --void:#05010D; --stage:#0B0219; --riser:#140628; --edge:#2A0F4D;
+    --ink:#F3E9FF; --ink-2:#C3A6E8; --muted:#7B5CA8;
+    --hot:#C6FF3D; --hot-2:#FF2BD1;
+    --halo:rgba(198,255,61,.2);
+    --noise:.06;
+  }
+}
+:root[data-skin="cyber"][data-mode="dark"]{
+  --void:#05010D; --stage:#0B0219; --riser:#140628; --edge:#2A0F4D;
+  --ink:#F3E9FF; --ink-2:#C3A6E8; --muted:#7B5CA8;
+  --hot:#C6FF3D; --hot-2:#FF2BD1;
+  --halo:rgba(198,255,61,.2);
+  --noise:.06;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--void); color:var(--ink); font-family:var(--body);
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  transition:background .6s var(--ease), color .6s var(--ease);
+}
+a{color:inherit; text-decoration:none}
+:focus-visible{outline:2px solid var(--hot); outline-offset:4px}
+.wrap{max-width:1280px; margin:0 auto; padding:0 clamp(18px,4vw,54px)}
+
+/* ambient */
+#spot{
+  position:fixed; width:640px; height:640px; border-radius:50%; pointer-events:none; z-index:0;
+  background:radial-gradient(circle,var(--halo) 0%,transparent 62%);
+  transform:translate(-50%,-50%); left:50%; top:22%;
+  transition:background .6s var(--ease); filter:blur(14px);
+}
+#grain{
+  position:fixed; inset:0; pointer-events:none; z-index:60; opacity:var(--noise);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  transition:opacity .6s var(--ease);
+}
+.z{position:relative; z-index:1}
+
+/* nav */
+header{position:fixed; top:0; left:0; right:0; z-index:40; mix-blend-mode:normal}
+.nav{
+  display:flex; align-items:center; gap:20px; padding:16px clamp(18px,4vw,54px);
+  background:linear-gradient(to bottom,var(--void) 12%,transparent);
+}
+.mark{font-family:var(--disp); font-size:26px; font-weight:800; letter-spacing:.01em; line-height:1}
+.mark em{font-style:normal; color:var(--hot)}
+.nav ul{display:flex; gap:26px; list-style:none; margin:0 auto 0 34px; padding:0; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase}
+.nav ul a{color:var(--ink-2); position:relative; transition:color .3s}
+.nav ul a::before{content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px; background:var(--hot); transform:scaleX(0); transform-origin:right; transition:transform .4s var(--ease)}
+.nav ul a:hover{color:var(--ink)}
+.nav ul a:hover::before{transform:scaleX(1); transform-origin:left}
+
+.switch{
+  position:relative; display:flex; align-items:center; gap:8px; padding:7px 8px 7px 15px;
+  border:1px solid var(--edge); border-radius:999px; background:color-mix(in oklab,var(--stage) 70%,transparent);
+  backdrop-filter:blur(10px); cursor:pointer; font-family:var(--mono); font-size:10px;
+  letter-spacing:.14em; color:var(--ink-2); text-transform:uppercase;
+  transition:border-color .4s var(--ease), color .3s;
+}
+.switch:hover{border-color:var(--hot); color:var(--ink)}
+.switch.mode{padding:7px 16px; gap:0}
+.switch.mode::before{content:""; width:9px; height:9px; border-radius:50%; margin-right:8px; border:1.5px solid currentColor; background:var(--hot); transition:background .5s var(--ease)}
+:root[data-mode="dark"] .switch.mode::before{background:transparent; box-shadow:inset -3px -1px 0 0 currentColor}
+.orb{width:22px; height:22px; border-radius:50%; background:var(--hot); box-shadow:0 0 18px -2px var(--hot); transition:background .5s var(--ease), box-shadow .5s var(--ease), transform .6s var(--ease)}
+:root[data-skin="cyber"] .orb{transform:rotate(180deg) scale(1.05)}
+
+/* hero */
+.hero{padding:116px 0 70px; position:relative}
+.tagline{font-family:var(--mono); font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--hot); margin-bottom:22px; display:flex; gap:14px; align-items:center}
+.tagline::after{content:""; height:1px; width:78px; background:currentColor; opacity:.5}
+h1{
+  font-family:var(--disp); font-weight:800; font-size:clamp(58px,13vw,188px);
+  line-height:.82; letter-spacing:-.015em; margin:0; text-transform:uppercase; text-wrap:balance;
+}
+h1 .out{
+  color:transparent; -webkit-text-stroke:1.5px var(--hot-2); text-stroke:1.5px var(--hot-2);
+  transition:-webkit-text-stroke-color .6s var(--ease);
+}
+h1 .fill{color:var(--hot)}
+.slide{display:block; overflow:hidden}
+.slide > span{display:block; animation:slide 1.05s var(--ease) both}
+@keyframes slide{from{transform:translateY(102%)} to{transform:none}}
+
+.herofoot{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:44px; align-items:end; margin-top:46px}
+.blurb{font-size:19px; line-height:1.55; color:var(--ink-2); max-width:46ch}
+.blurb b{color:var(--ink); font-weight:600}
+.acts{display:flex; gap:12px; margin-top:28px; flex-wrap:wrap}
+.mag{
+  padding:15px 28px; border-radius:999px; border:1px solid var(--edge); background:transparent;
+  color:var(--ink); font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  cursor:pointer; transition:transform .35s var(--ease), background .35s var(--ease), color .35s, border-color .35s, box-shadow .35s;
+}
+.mag:hover{border-color:var(--hot); box-shadow:0 0 34px -12px var(--hot)}
+.mag.solid{background:var(--hot); border-color:var(--hot); color:var(--void); font-weight:700}
+.mag.solid:hover{box-shadow:0 14px 40px -14px var(--hot)}
+
+.frame{position:relative; aspect-ratio:3/4; border-radius:6px; overflow:hidden; background:var(--riser); border:1px solid var(--edge)}
+.frame span{position:absolute; inset:0; display:grid; place-content:center; text-align:center; font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--muted); line-height:2.2}
+.frame::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(115deg,transparent 38%,color-mix(in oklab,var(--hot) 22%,transparent) 50%,transparent 62%);
+  transform:translateX(-100%); animation:sheen 4.5s var(--ease) 1.2s infinite;
+}
+@keyframes sheen{0%{transform:translateX(-100%)} 55%,100%{transform:translateX(100%)}}
+.framecap{font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--muted); margin-top:10px; text-transform:uppercase}
+
+/* ticker */
+.ticker{border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); overflow:hidden; padding:14px 0; margin-top:56px}
+.track{display:flex; gap:44px; width:max-content; animation:roll 34s linear infinite; font-family:var(--disp); font-size:30px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-2)}
+.track b{color:var(--hot); font-weight:600}
+.track span{display:flex; gap:44px}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* sections */
+section{padding:96px 0}
+.head{display:flex; align-items:flex-end; gap:22px; margin-bottom:40px; flex-wrap:wrap}
+.head h2{font-family:var(--disp); font-size:clamp(42px,7vw,90px); font-weight:800; text-transform:uppercase; line-height:.85; letter-spacing:-.01em; margin:0}
+.head .note{margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); text-align:right}
+
+/* project rail */
+.rail{display:flex; gap:20px; overflow-x:auto; padding:6px 0 22px; scroll-snap-type:x mandatory; scrollbar-width:thin}
+.rail::-webkit-scrollbar{height:4px}
+.rail::-webkit-scrollbar-thumb{background:var(--edge); border-radius:4px}
+.card{
+  flex:0 0 clamp(268px,32vw,368px); scroll-snap-align:start; background:var(--stage);
+  border:1px solid var(--edge); border-radius:14px; padding:26px; display:flex; flex-direction:column;
+  position:relative; overflow:hidden; min-height:326px;
+  transition:transform .45s var(--ease), border-color .45s var(--ease), background .45s var(--ease);
+}
+.card::before{
+  content:""; position:absolute; inset:0; opacity:0;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in oklab,var(--hot) 12%,transparent),transparent 62%);
+  transition:opacity .45s var(--ease);
+}
+.card:hover{transform:translateY(-8px); border-color:color-mix(in oklab,var(--hot) 55%,transparent)}
+.card:hover::before{opacity:1}
+.card .no{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--muted)}
+.card h3{font-family:var(--disp); font-size:38px; font-weight:600; text-transform:uppercase; margin:14px 0 10px; letter-spacing:.005em; line-height:.95}
+.card p{font-size:14px; color:var(--ink-2); margin:0 0 18px; position:relative}
+.card .stack{display:flex; gap:7px; flex-wrap:wrap; font-family:var(--mono); font-size:10px; letter-spacing:.06em; margin-top:auto}
+.card .stack i{font-style:normal; padding:4px 10px; border:1px solid var(--edge); border-radius:999px; color:var(--muted)}
+.card .foot{display:flex; align-items:center; gap:14px; margin-top:18px; padding-top:16px; border-top:1px solid var(--edge); font-family:var(--mono); font-size:11.5px; color:var(--ink-2)}
+.card .foot .arw{margin-left:auto; color:var(--hot); transition:transform .35s var(--ease)}
+.card:hover .foot .arw{transform:translateX(6px)}
+
+/* résumé */
+.cvgrid{display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr); gap:44px; align-items:start}
+.line{
+  display:grid; grid-template-columns:96px minmax(0,1fr); gap:22px; padding:24px 0;
+  border-top:1px solid var(--edge); transition:padding-left .4s var(--ease);
+}
+.line:hover{padding-left:14px}
+.line:last-child{border-bottom:1px solid var(--edge)}
+.line .yr{font-family:var(--mono); font-size:11px; color:var(--hot); letter-spacing:.06em; padding-top:5px}
+.line h4{font-family:var(--disp); font-size:29px; font-weight:600; text-transform:uppercase; margin:0 0 3px; line-height:1}
+.line .org{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.1em; margin-bottom:9px; text-transform:uppercase}
+.line p{margin:0; color:var(--ink-2); font-size:14.5px; max-width:56ch}
+.rescard{background:var(--stage); border:1px solid var(--edge); border-radius:14px; padding:28px; position:sticky; top:92px}
+.rescard .big{font-family:var(--disp); font-size:58px; font-weight:800; line-height:.9; text-transform:uppercase; margin:0 0 8px}
+.rescard p{color:var(--ink-2); font-size:14px; margin:0 0 20px}
+.rescard .meta{font-family:var(--mono); font-size:10.5px; color:var(--muted); display:flex; justify-content:space-between; margin-top:12px; letter-spacing:.06em}
+
+/* contact */
+.contact{border-top:1px solid var(--edge)}
+.socials{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:14px; margin-top:36px}
+.soc{
+  display:flex; align-items:center; gap:13px; padding:20px; border-radius:12px;
+  border:1px solid var(--edge); background:var(--stage); position:relative; overflow:hidden;
+  transition:transform .35s var(--ease), border-color .35s, background .35s;
+}
+.soc span{min-width:0}
+.soc small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
+.soc svg{width:19px; height:19px; fill:currentColor; color:var(--muted); flex:none; transition:color .35s, transform .35s var(--ease)}
+.soc b{font-family:var(--disp); font-size:24px; font-weight:600; text-transform:uppercase; line-height:1; display:block}
+.soc small{font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em}
+.soc:hover{transform:translateY(-5px); border-color:var(--hot); background:var(--riser)}
+.soc:hover svg{color:var(--hot); transform:scale(1.12)}
+footer{padding:40px 0 64px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+
+.up{animation:up .9s var(--ease) both}
+@keyframes up{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
+
+@media (max-width:760px){
+  .socials{grid-auto-flow:row; grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  .nav ul{display:none}
+  .herofoot{grid-template-columns:1fr; gap:30px}
+  .frame{max-width:230px}
+  .cvgrid{grid-template-columns:1fr; gap:28px}
+  .rescard{position:static}
+  .line{grid-template-columns:1fr; gap:4px}
+  #spot{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}}
+</style>
+
+<div id="spot"></div>
+<div id="grain"></div>
+
+<header>
+  <div class="nav">
+    <div class="mark">VK<em>.</em></div>
+    <ul><li><a href="#work">Work</a></li><li><a href="#cv">Résumé</a></li><li><a href="#say">Contact</a></li></ul>
+    <button class="switch mode" id="mode"><span id="mname">Day</span></button>
+    <button class="switch" id="switch"><span id="sname">Executive</span><span class="orb"></span></button>
+  </div>
+</header>
+
+<div class="wrap z">
+  <section class="hero">
+    <div class="tagline up">Director of engineering · applied AI</div>
+    <h1>
+      <span class="slide"><span>Builds the</span></span>
+      <span class="slide"><span class="out" style="animation-delay:.08s">systems</span></span>
+      <span class="slide"><span style="animation-delay:.16s">that ship <span class="fill">the</span></span></span>
+      <span class="slide"><span class="fill" style="animation-delay:.24s">models.</span></span>
+    </h1>
+    <div class="herofoot">
+      <div class="up" style="animation-delay:.5s">
+        <p class="blurb"><b>Fourteen years, forty engineers, one unbroken commit streak.</b> I run AI platform teams and still write the code that decides whether a model feels fast, honest, and worth paying for.</p>
+        <div class="acts">
+          <button class="mag solid">Résumé ↓</button>
+          <button class="mag">See the work</button>
+          <button class="mag">LinkedIn</button>
+        </div>
+      </div>
+      <div class="up" style="animation-delay:.6s">
+        <div class="frame"><span>PORTRAIT<br>PLACEHOLDER<br>3:4 · 1200×1600</span></div>
+        <div class="framecap">/assets/portrait.webp</div>
+      </div>
+    </div>
+
+    <div class="ticker">
+      <div class="track">
+        <span>Inference &nbsp;·&nbsp; <b>Evals</b> &nbsp;·&nbsp; GPU scheduling &nbsp;·&nbsp; <b>Rust</b> &nbsp;·&nbsp; Latency budgets &nbsp;·&nbsp; <b>Hiring</b> &nbsp;·&nbsp; Retrieval &nbsp;·&nbsp; <b>Platform economics</b> &nbsp;·&nbsp;</span>
+        <span aria-hidden="true">Inference &nbsp;·&nbsp; <b>Evals</b> &nbsp;·&nbsp; GPU scheduling &nbsp;·&nbsp; <b>Rust</b> &nbsp;·&nbsp; Latency budgets &nbsp;·&nbsp; <b>Hiring</b> &nbsp;·&nbsp; Retrieval &nbsp;·&nbsp; <b>Platform economics</b> &nbsp;·&nbsp;</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="head"><h2>Selected<br>repositories</h2><div class="note">Live from GitHub<br>drag or scroll →</div></div>
+    <div class="rail">
+      <a class="card" href="#"><span class="no">01 / RUST</span><h3>atlas<br>serve</h3>
+        <p>Multi-tenant inference gateway. Token-aware routing and per-tenant KV cache reuse hold p99 at 240 ms across eleven model families.</p>
+        <div class="stack"><i>Rust</i><i>vLLM</i><i>gRPC</i><i>Kubernetes</i></div>
+        <div class="foot"><span>★ 2,481</span><span>3d ago</span><span class="arw">→</span></div></a>
+      <a class="card" href="#"><span class="no">02 / PYTHON</span><h3>eval<br>bench</h3>
+        <p>Regression harness for LLM products — golden sets, drift alarms, and a diff view that names the prompt change that broke the cohort.</p>
+        <div class="stack"><i>Python</i><i>DuckDB</i><i>OSS</i></div>
+        <div class="foot"><span>★ 934</span><span>1w ago</span><span class="arw">→</span></div></a>
+      <a class="card" href="#"><span class="no">03 / TYPESCRIPT</span><h3>rag<br>tag</h3>
+        <p>Retrieval that admits ignorance. Hybrid BM25 with late-interaction reranking and a calibrated abstain threshold.</p>
+        <div class="stack"><i>TypeScript</i><i>pgvector</i></div>
+        <div class="foot"><span>★ 612</span><span>2w ago</span><span class="arw">→</span></div></a>
+      <a class="card" href="#"><span class="no">04 / GO</span><h3>orgchart<br>as code</h3>
+        <p>Team topology, on-call, and headcount plans in versioned YAML with a diff renderer that survives a reorg.</p>
+        <div class="stack"><i>Go</i><i>CLI</i></div>
+        <div class="foot"><span>★ 288</span><span>1mo ago</span><span class="arw">→</span></div></a>
+    </div>
+  </section>
+
+  <section id="cv">
+    <div class="head"><h2>Track<br>record</h2><div class="note">14 years<br>3 in the AI era</div></div>
+    <div class="cvgrid">
+      <div>
+        <div class="line"><div class="yr">2023 →</div><div><h4>Director, AI Platform</h4><div class="org">Northwind</div>
+          <p>Forty engineers across inference, evaluation, and data platform. Serving cost down 61% while volume doubled. Evaluation became a release gate, not a slide.</p></div></div>
+        <div class="line"><div class="yr">2019–23</div><div><h4>Sr. Engineering Manager</h4><div class="org">Kepler Labs</div>
+          <p>Grew ML infrastructure from four engineers to twenty-two and shipped the feature store still serving production ranking.</p></div></div>
+        <div class="line"><div class="yr">2015–19</div><div><h4>Staff Engineer</h4><div class="org">Meridian</div>
+          <p>Distributed storage and GPU scheduling. Wrote the placement algorithm that cut cluster idle time by a third.</p></div></div>
+      </div>
+      <div class="rescard">
+        <p class="big">Get the<br>PDF</p>
+        <p>Two pages, no filler — full role history, references, and the numbers behind each line.</p>
+        <button class="mag solid" style="width:100%">Download ↓</button>
+        <div class="meta"><span>214 KB</span><span>Aug 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="say" class="contact">
+    <div class="head"><h2>Say<br>hello</h2><div class="note">Replies within a day<br>hello@vijay.dev</div></div>
+    <div class="socials">
+      <a class="soc" href="#"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.33C3.8 14.36 3.33 12.9 3.33 12.9c-.36-.92-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 014 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 008 0z"/></svg><span><b>GitHub</b><small>@vijaykudva</small></span></a>
+      <a class="soc" href="#"><svg viewBox="0 0 16 16"><path d="M3.6 14.4H.6V5.4h3v9zM2.1 4.1a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5zM15.4 14.4h-3V9.9c0-1.07-.02-2.44-1.49-2.44-1.5 0-1.72 1.16-1.72 2.36v4.58h-3V5.4h2.88v1.23h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.6v4.73z"/></svg><span><b>LinkedIn</b><small>in/vijaykudva</small></span></a>
+      <a class="soc" href="#"><svg viewBox="0 0 16 16"><path d="M9.5 6.8L15.1 0h-1.3L8.9 6L5 0H.4l5.9 8.6L.4 16h1.3l5.2-6.3 4.1 6.3H15.6L9.5 6.8zM7.6 8.9l-.6-.9-4.7-6.8h2l3.8 5.6.6.9 5 7.2h-2L7.6 8.9z"/></svg><span><b>X</b><small>@vijaykudva</small></span></a>
+      <a class="soc" href="#"><svg viewBox="0 0 16 16"><path d="M8 6.3C7.1 4.6 4.6 1.4 2.3.6 1.2.2 0 .5 0 2c0 1.4.8 5.8 1.2 6.6.5 1.1 1.6 1.5 2.6 1.4-1.6.3-2 1.2-1.1 2.1 1.7 1.8 3.7-1.4 4.1-2.2l.2-.4.2.4c.4.8 2.4 4 4.1 2.2.9-.9.5-1.8-1.1-2.1 1 .1 2.1-.3 2.6-1.4C15.2 7.8 16 3.4 16 2c0-1.5-1.2-1.8-2.3-1.4C11.4 1.4 8.9 4.6 8 6.3z"/></svg><span><b>Bluesky</b><small>vijay.dev</small></span></a>
+      <a class="soc" href="#"><svg viewBox="0 0 16 16"><path d="M1.5 2h13c.8 0 1.5.7 1.5 1.5v9c0 .8-.7 1.5-1.5 1.5h-13C.7 14 0 13.3 0 12.5v-9C0 2.7.7 2 1.5 2zm6.5 6.2L14.6 3.4H1.4L8 8.2zM1 4.6v7.9L6 8.9 1 4.6zm14 0L10 8.9l5 3.6V4.6zM7 9l-5 3.9h12L9 9l-1 .7L7 9z"/></svg><span><b>Email</b><small>hello@vijay.dev</small></span></a>
+    </div>
+    <footer><span>Built as a PWA · offline ready</span><span>© 2026 Vijay Krishna Kudva</span></footer>
+  </section>
+</div>
+
+<script>
+const root = document.documentElement, sw = document.getElementById('switch'), sname = document.getElementById('sname');
+const md = document.getElementById('mode'), mname = document.getElementById('mname');
+root.dataset.skin = 'pro';
+function setMode(dark){
+  root.dataset.mode = dark ? 'dark' : 'light';
+  mname.textContent = dark ? 'Night' : 'Day';
+  md.setAttribute('aria-pressed', String(dark));
+}
+/* each persona carries its own daylight: Executive opens in Day, Overdrive in Night.
+   The Day/Night pill still overrides afterwards. */
+sw.addEventListener('click', () => {
+  const cyber = root.dataset.skin !== 'cyber';
+  root.dataset.skin = cyber ? 'cyber' : 'pro';
+  sname.textContent = cyber ? 'Overdrive' : 'Executive';
+  setMode(cyber);
+});
+md.addEventListener('click', () => setMode(root.dataset.mode !== 'dark'));
+setMode(false);
+
+const spot = document.getElementById('spot');
+const fine = matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches;
+if (fine) {
+  let tx = innerWidth / 2, ty = innerHeight * .3, cx = tx, cy = ty;
+  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; });
+  (function loop(){ cx += (tx - cx) * .07; cy += (ty - cy) * .07; spot.style.left = cx + 'px'; spot.style.top = cy + 'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }));
+}
+</script>

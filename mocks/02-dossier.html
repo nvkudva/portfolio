@@ -1,0 +1,295 @@
+<title>Dossier Portfolio</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,700&family=Public+Sans:wght@300;400;500;600&family=Martian+Mono:wght@300;500&display=swap">
+<style>
+:root{
+  --bg:#EDECE8; --bg-2:#E3E2DC; --card:#F6F5F2;
+  --ink:#15161A; --ink-2:#4A4C55; --muted:#86888F;
+  --rule:#C9C8C1; --accent:#7A1226; --accent-2:#15161A;
+  --glow:none; --aberration:0;
+  --serif:"Bodoni Moda",Georgia,serif;
+  --sans:"Public Sans",system-ui,sans-serif;
+  --mono:"Martian Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131315; --bg-2:#1A1A1D; --card:#1E1E22;
+    --ink:#EDECE8; --ink-2:#B0AFA9; --muted:#77767C;
+    --rule:#2E2E33; --accent:#E4657C; --accent-2:#EDECE8;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131315; --bg-2:#1A1A1D; --card:#1E1E22;
+  --ink:#EDECE8; --ink-2:#B0AFA9; --muted:#77767C;
+  --rule:#2E2E33; --accent:#E4657C; --accent-2:#EDECE8;
+}
+:root[data-skin="cyber"]{
+  --bg:#020308; --bg-2:#060913; --card:#080C1A;
+  --ink:#E4FBFF; --ink-2:#6FD8E8; --muted:#3A6C7C;
+  --rule:#123543; --accent:#FF2E9A; --accent-2:#00F0FF;
+  --glow:0 0 34px -8px rgba(0,240,255,.5);
+  --aberration:1;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  transition:background .5s var(--ease), color .5s var(--ease);
+}
+a{color:inherit; text-decoration:none}
+:focus-visible{outline:2px solid var(--accent); outline-offset:4px}
+
+.wrap{max-width:1240px; margin:0 auto; padding:0 clamp(18px,4vw,52px)}
+
+/* masthead */
+header{
+  position:sticky; top:0; z-index:30; background:color-mix(in oklab,var(--bg) 88%,transparent);
+  backdrop-filter:blur(14px); border-bottom:1px solid var(--rule);
+  transition:background .5s var(--ease), border-color .5s var(--ease);
+}
+.mast{display:flex; align-items:center; gap:26px; padding:15px 0}
+.sig{font-family:var(--serif); font-size:21px; font-weight:700; letter-spacing:-.01em}
+nav.top{display:flex; gap:22px; margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase}
+nav.top a{color:var(--muted); position:relative; padding-bottom:3px; transition:color .3s}
+nav.top a::after{content:""; position:absolute; left:0; bottom:0; height:1px; width:0; background:var(--accent); transition:width .35s var(--ease)}
+nav.top a:hover{color:var(--ink)} nav.top a:hover::after{width:100%}
+
+.swap{
+  display:flex; align-items:center; gap:9px; border:1px solid var(--rule); border-radius:999px;
+  padding:4px 5px 4px 12px; font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+  color:var(--muted); cursor:pointer; background:transparent;
+  transition:border-color .3s, color .3s;
+}
+.swap:hover{border-color:var(--accent); color:var(--ink)}
+.knob{width:34px; height:18px; border-radius:999px; background:var(--rule); position:relative; transition:background .4s var(--ease)}
+.knob::after{
+  content:""; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%;
+  background:var(--bg); transition:transform .45s var(--ease), background .4s;
+}
+:root[data-skin="cyber"] .knob{background:var(--accent-2)}
+:root[data-skin="cyber"] .knob::after{transform:translateX(16px); background:#020308}
+
+/* hero */
+.hero{padding:clamp(44px,7vw,86px) 0 60px; border-bottom:1px solid var(--rule)}
+.kicker{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:26px;
+}
+h1{
+  font-family:var(--serif); font-weight:400; font-size:clamp(52px,11vw,138px);
+  line-height:.92; letter-spacing:-.035em; margin:0; text-wrap:balance;
+}
+h1 i{font-style:italic; color:var(--accent)}
+.aberr{position:relative; display:inline-block}
+:root[data-skin="cyber"] .aberr::before,
+:root[data-skin="cyber"] .aberr::after{
+  content:attr(data-t); position:absolute; inset:0; pointer-events:none;
+}
+:root[data-skin="cyber"] .aberr::before{color:var(--accent); transform:translate(-3px,1px); opacity:.75; mix-blend-mode:screen}
+:root[data-skin="cyber"] .aberr::after{color:var(--accent-2); transform:translate(3px,-1px); opacity:.75; mix-blend-mode:screen}
+
+.herogrid{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:clamp(28px,5vw,64px); margin-top:44px; align-items:end}
+.abstract{font-size:19.5px; line-height:1.55; color:var(--ink-2); max-width:50ch}
+.abstract strong{color:var(--ink); font-weight:600}
+.facts{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:34px}
+.fact{background:var(--bg); padding:16px 14px; transition:background .5s var(--ease)}
+.fact b{display:block; font-family:var(--serif); font-size:30px; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.fact span{font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+
+.plate{position:relative; aspect-ratio:3/4; background:var(--bg-2); border:1px solid var(--rule); display:grid; place-content:center; text-align:center; box-shadow:var(--glow); transition:box-shadow .5s var(--ease), background .5s var(--ease)}
+.plate span{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--muted); line-height:2}
+.plate::before{content:"PLATE I"; position:absolute; top:12px; left:14px; font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--muted)}
+.platecap{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; color:var(--muted); margin-top:10px; text-transform:uppercase}
+
+/* section frame */
+section{padding:74px 0; border-bottom:1px solid var(--rule)}
+.sechead{display:flex; align-items:baseline; gap:18px; margin-bottom:38px}
+.secno{font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; color:var(--accent)}
+h2{font-family:var(--serif); font-weight:400; font-size:clamp(28px,4.4vw,50px); letter-spacing:-.025em; margin:0; line-height:1.05}
+.sechead p{margin:0 0 0 auto; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); text-align:right}
+
+/* index of works */
+.index{border-top:1px solid var(--rule)}
+.entry{
+  display:grid; grid-template-columns:56px minmax(0,1fr) 190px 116px;
+  gap:22px; align-items:center; padding:24px 12px; border-bottom:1px solid var(--rule);
+  position:relative; transition:padding .4s var(--ease), background .4s var(--ease);
+}
+.entry::before{
+  content:""; position:absolute; inset:0; background:var(--card); opacity:0; z-index:-1;
+  transition:opacity .4s var(--ease);
+}
+.entry:hover{padding-left:24px; padding-right:0}
+.entry:hover::before{opacity:1}
+.entry .no{font-family:var(--mono); font-size:10.5px; color:var(--muted)}
+.entry h3{font-family:var(--serif); font-weight:500; font-size:clamp(22px,2.8vw,32px); margin:0; letter-spacing:-.02em; transition:color .3s}
+.entry:hover h3{color:var(--accent)}
+.entry .sub{color:var(--ink-2); font-size:14.5px; margin:5px 0 0; max-width:52ch}
+.entry .stack{font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; line-height:1.9}
+.entry .stars{font-family:var(--mono); font-size:12.5px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink-2)}
+.entry .stars em{display:block; font-style:normal; font-size:9.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase}
+.bar{height:2px; background:var(--rule); margin-top:7px; position:relative; overflow:hidden}
+.bar i{position:absolute; inset:0 auto 0 0; background:var(--accent); transform-origin:left; animation:grow 1.1s var(--ease) both}
+@keyframes grow{from{transform:scaleX(0)} to{transform:scaleX(1)}}
+
+/* résumé — timeline */
+.cv{display:grid; grid-template-columns:170px minmax(0,1fr); gap:34px}
+.cvside{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); line-height:2.2}
+.role{padding:22px 0; border-top:1px solid var(--rule); display:grid; grid-template-columns:112px minmax(0,1fr); gap:26px; transition:background .35s var(--ease)}
+.role:hover{background:var(--card)}
+.role .yr{font-family:var(--mono); font-size:11px; color:var(--accent); letter-spacing:.06em}
+.role h4{font-family:var(--serif); font-size:22px; font-weight:500; margin:0 0 4px; letter-spacing:-.015em}
+.role .org{font-size:13px; color:var(--muted); font-family:var(--mono); letter-spacing:.05em; margin-bottom:9px}
+.role p{margin:0; color:var(--ink-2); font-size:14.5px; max-width:58ch}
+.dl{display:inline-flex; align-items:center; gap:10px; margin-top:26px; padding:14px 24px; border:1px solid var(--ink); font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; transition:all .35s var(--ease)}
+.dl:hover{background:var(--ink); color:var(--bg); gap:16px}
+:root[data-skin="cyber"] .dl{border-color:var(--accent-2); color:var(--accent-2); box-shadow:var(--glow)}
+:root[data-skin="cyber"] .dl:hover{background:var(--accent-2); color:#020308}
+
+/* colophon / socials */
+.colophon{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule)}
+.cell{
+  background:var(--bg); padding:26px 20px; position:relative; overflow:hidden;
+  transition:background .4s var(--ease), color .4s;
+}
+.cell b{font-family:var(--serif); font-size:20px; font-weight:500; display:block}
+.cell span{font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase}
+.cell::after{
+  content:""; position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--accent);
+  transition:width .45s var(--ease);
+}
+.cell:hover{background:var(--card)} .cell:hover::after{width:100%}
+footer{padding:34px 0 70px; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+.fade{animation:fade .85s var(--ease) both}
+@keyframes fade{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+
+@media (max-width:700px){
+  .colophon{grid-auto-flow:row; grid-template-columns:1fr 1fr}
+}
+@media (max-width:880px){
+  .herogrid{grid-template-columns:1fr}
+  .plate{max-width:250px}
+  nav.top{display:none}
+  .entry{grid-template-columns:1fr; gap:8px; padding-left:0 !important}
+  .entry .stars{text-align:left}
+  .cv{grid-template-columns:1fr; gap:14px}
+  .role{grid-template-columns:1fr; gap:4px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important; transition-duration:.01ms !important}}
+</style>
+
+<header>
+  <div class="wrap mast">
+    <div class="sig">Vijay Kudva</div>
+    <nav class="top">
+      <a href="#work">Works</a><a href="#cv">Curriculum</a><a href="#end">Colophon</a>
+    </nav>
+    <button class="swap" id="swap">MODE<span class="knob"></span></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero" style="border-bottom:1px solid var(--rule)">
+    <div class="kicker fade">Portfolio · Vol. 03 · Sept 2026</div>
+    <h1 class="fade" style="animation-delay:.08s">
+      Hands on the<br><i>machine</i>, <span class="aberr" data-t="not just">not just</span><br>the roadmap.
+    </h1>
+    <div class="herogrid">
+      <div class="fade" style="animation-delay:.16s">
+        <p class="abstract">
+          <strong>Director of Engineering, AI Platform.</strong> Forty engineers, three product lines,
+          and a personal commit history that hasn't gone quiet. I care about the boring middle
+          of AI systems: evaluation, latency budgets, and what happens on the third bad day.
+        </p>
+        <div class="facts">
+          <div class="fact"><b>14</b><span>Years shipping</span></div>
+          <div class="fact"><b>40</b><span>Engineers led</span></div>
+          <div class="fact"><b>340</b><span>Commits / yr</span></div>
+        </div>
+      </div>
+      <div class="fade" style="animation-delay:.24s">
+        <div class="plate"><span>PORTRAIT<br>PLACEHOLDER<br>3 : 4</span></div>
+        <div class="platecap">/assets/portrait.webp</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="sechead">
+      <span class="secno">01</span><h2>Index of works</h2>
+      <p>Synced from GitHub · 4 of 27</p>
+    </div>
+    <div class="index">
+      <a class="entry" href="#">
+        <span class="no">i.</span>
+        <div><h3>atlas-serve</h3><p class="sub">Multi-tenant inference gateway with token-aware routing and per-tenant KV cache reuse. p99 held at 240 ms across eleven model families.</p></div>
+        <div class="stack">Rust · vLLM<br>gRPC · K8s</div>
+        <div class="stars">2,481<em>stars</em><div class="bar"><i style="animation-delay:.1s"></i></div></div>
+      </a>
+      <a class="entry" href="#">
+        <span class="no">ii.</span>
+        <div><h3>evalbench</h3><p class="sub">Regression harness for LLM products — golden sets, drift alarms, and a diff view that names the prompt change that broke the cohort.</p></div>
+        <div class="stack">Python · DuckDB<br>Open source</div>
+        <div class="stars">934<em>stars</em><div class="bar"><i style="animation-delay:.2s; transform:scaleX(.38)"></i></div></div>
+      </a>
+      <a class="entry" href="#">
+        <span class="no">iii.</span>
+        <div><h3>ragtag</h3><p class="sub">Retrieval that admits ignorance. Hybrid BM25 with late-interaction reranking and a calibrated abstain threshold.</p></div>
+        <div class="stack">TypeScript<br>pgvector</div>
+        <div class="stars">612<em>stars</em><div class="bar"><i style="animation-delay:.3s; transform:scaleX(.25)"></i></div></div>
+      </a>
+      <a class="entry" href="#">
+        <span class="no">iv.</span>
+        <div><h3>orgchart-as-code</h3><p class="sub">Team topology, on-call rotations, and headcount plans in versioned YAML, with a diff renderer that survives reorgs.</p></div>
+        <div class="stack">Go · CLI</div>
+        <div class="stars">288<em>stars</em><div class="bar"><i style="animation-delay:.4s; transform:scaleX(.12)"></i></div></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="cv">
+    <div class="sechead"><span class="secno">02</span><h2>Curriculum vitæ</h2><p>PDF · 214 KB · Aug 2026</p></div>
+    <div class="cv">
+      <div class="cvside">
+        Selected roles<br>and the systems<br>left behind.<br><br>
+        Full history<br>in the PDF.
+      </div>
+      <div>
+        <div class="role"><span class="yr">2023 →</span>
+          <div><h4>Director of Engineering, AI Platform</h4><div class="org">Northwind</div>
+          <p>Forty engineers across inference, evaluation, and data platform. Serving cost down 61% while request volume doubled. Still reviews the hard PRs.</p></div></div>
+        <div class="role"><span class="yr">2019–23</span>
+          <div><h4>Senior Engineering Manager</h4><div class="org">Kepler Labs</div>
+          <p>Grew the ML infrastructure group from four to twenty-two. Shipped the feature store that is still the backbone of production ranking.</p></div></div>
+        <div class="role"><span class="yr">2015–19</span>
+          <div><h4>Staff Software Engineer</h4><div class="org">Meridian</div>
+          <p>Distributed storage and GPU scheduling. Wrote the placement algorithm that cut cluster idle time by a third.</p></div></div>
+        <a class="dl" href="#">Download résumé →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" style="border-bottom:0">
+    <div class="sechead"><span class="secno">03</span><h2>Colophon</h2><p>Elsewhere on the network</p></div>
+    <div class="colophon">
+      <a class="cell" href="#"><b>GitHub</b><span>@vijaykudva</span></a>
+      <a class="cell" href="#"><b>LinkedIn</b><span>in/vijaykudva</span></a>
+      <a class="cell" href="#"><b>X</b><span>@vijaykudva</span></a>
+      <a class="cell" href="#"><b>Bluesky</b><span>vijay.dev</span></a>
+      <a class="cell" href="#"><b>Email</b><span>hello@vijay.dev</span></a>
+    </div>
+  </section>
+
+  <footer><span>Set in Bodoni Moda &amp; Public Sans</span><span>© 2026 Vijay Kudva</span></footer>
+</div>
+
+<script>
+const root = document.documentElement;
+root.dataset.skin = 'pro';
+document.getElementById('swap').addEventListener('click', () => {
+  root.dataset.skin = root.dataset.skin === 'cyber' ? 'pro' : 'cyber';
+});
+</script>

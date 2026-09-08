@@ -1,0 +1,213 @@
+import {
+  profile, stats, tenets, platforms, projects,
+  experience, strengths, speaking, writing, education, socials, icons,
+} from './data.js';
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const svg = (k) => `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="${icons[k]}"/></svg>`;
+const ext = (u) => (u.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '');
+
+const portrait = () => `
+  <div class="rise" style="animation-delay:.2s">
+    <div class="portrait">
+      <i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i>
+      <div class="ph">[ PORTRAIT ]<br>4:5 · 1200×1500</div>
+    </div>
+    <div class="portcap">Drop a photo at<br>/assets/img/portrait.jpg</div>
+  </div>`;
+
+const socialRow = () => `
+  <div class="links">
+    ${socials.map((s) => `
+      <a class="link" href="${s.u}"${ext(s.u)}>
+        ${svg(s.i)}
+        <span>${esc(s.n)}<small>${esc(s.h)}</small></span>
+      </a>`).join('')}
+  </div>`;
+
+/* ------------------------------------------------------------------ */
+
+export const home = () => `
+  <section class="hero">
+    <div>
+      <div class="statusline rise">
+        <span>${esc(profile.location)} · ${esc(profile.timezone)}</span><span>·</span>
+        <span><b>●</b> ${esc(profile.status)}</span><span>·</span>
+        <span>${esc(profile.pedigree)}</span>
+      </div>
+      <h1 class="rise" style="animation-delay:.05s">${esc(profile.name)}</h1>
+      <p class="lede rise" style="animation-delay:.1s">${profile.lede[0]}</p>
+      <p class="lede rise" style="animation-delay:.14s" >${profile.lede[1]}</p>
+      <div class="cta rise" style="animation-delay:.18s">
+        <a class="btn primary" href="${profile.resume}" download>Download résumé ↓</a>
+        <a class="btn" href="/projects" data-link>See the work</a>
+        <a class="btn" href="https://www.linkedin.com/in/nvkudva/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+    ${portrait()}
+  </section>
+
+  <section>
+    <div class="eyebrow">By the numbers</div>
+    <div class="stats" style="margin-top:0">
+      ${stats.map((s) => `<div class="stat"><b>${esc(s.v)}</b><span>${esc(s.k)}</span></div>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">How I run an engineering org in the AI era</div>
+    <h2>Four tenets I actually operate by</h2>
+    <p class="sublede" style="margin-bottom:28px">Not predictions. These are the rules I use to decide where humans spend attention.</p>
+    <div class="tenets">
+      ${tenets.map((t, i) => `
+        <div class="tenet">
+          <span class="n">0${i + 1}</span>
+          <h3>${esc(t.t)}</h3>
+          <p>${esc(t.d)}</p>
+        </div>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Off the clock</div>
+    <p style="font-size:17px">${esc(profile.personal)}</p>
+  </section>`;
+
+/* ------------------------------------------------------------------ */
+
+export const projectsView = () => `
+  <section style="padding-top:58px">
+    <div class="eyebrow">Platforms · shipped at scale</div>
+    <h1 style="font-size:clamp(30px,4vw,44px)">Things I built, not things I approved</h1>
+    <p class="sublede" style="margin-bottom:22px">Six platforms that carried real traffic, real agents and real revenue.</p>
+    <div style="margin-top:24px">
+      ${platforms.map((p) => `
+        <article class="plat">
+          <div>
+            <div class="org">${esc(p.org)} <span>${esc(p.years)}</span></div>
+            <h3 style="font-size:18px">${esc(p.name)}</h3>
+            <p>${esc(p.body)}</p>
+          </div>
+          <div class="mx">
+            ${p.metrics.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}
+          </div>
+        </article>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Open source · github.com/nvkudva</div>
+    <h2>What I'm building now</h2>
+    <p class="sublede" style="margin-bottom:24px">Since May 2025 I've been hands-on with applied AI. These are public repos, most of them active this month.</p>
+    <div>
+      ${projects.map((p, i) => {
+        /* private repos get no link — the URL would 404 for anyone but him */
+        const open = p.private
+          ? '<article class="repo is-private">'
+          : `<a class="repo" href="https://github.com/nvkudva/${p.name}" target="_blank" rel="noopener noreferrer">`;
+        return `${open}
+          <span class="idx">${String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>${esc(p.name)}${p.private ? '' : ' <span class="go">→</span>'}</h3>
+            <p>${esc(p.desc)}</p>
+            <div class="tags">
+              ${p.lang ? `<span class="tag lang">${esc(p.lang)}</span>` : ''}
+              ${p.license ? `<span class="tag">${esc(p.license)}</span>` : ''}
+              ${p.private ? '<span class="tag lock">private repo</span>' : ''}
+              ${p.draft ? '<span class="tag draft">description draft</span>' : ''}
+            </div>
+          </div>
+          <div class="meta">updated<br>${esc(p.updated)}</div>
+        ${p.private ? '</article>' : '</a>'}`;
+      }).join('')}
+    </div>
+    <div class="cta">
+      <a class="btn" href="https://github.com/nvkudva?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories on GitHub ↗</a>
+    </div>
+  </section>`;
+
+/* ------------------------------------------------------------------ */
+
+export const resumeView = () => `
+  <section style="padding-top:58px">
+    <div class="eyebrow">Résumé</div>
+    <h1 style="font-size:clamp(30px,4vw,44px)">Seventeen years, and still in the editor</h1>
+    <div class="dl" style="margin-top:26px">
+      <div class="f"><b>Vijay-Krishna-Kudva-Resume.pdf</b>${esc(profile.resumeMeta.size)} · ${esc(profile.resumeMeta.updated)}</div>
+      <a class="btn primary" href="${profile.resume}" download style="margin-left:auto">Download PDF ↓</a>
+      <a class="btn" href="${profile.resume}" target="_blank" rel="noopener noreferrer">Open in browser</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Experience</div>
+    ${experience.map((e) => `
+      <article class="job">
+        <div><div class="when">${esc(e.years)}</div><div class="where">${esc(e.where)}</div></div>
+        <div>
+          <h3>${esc(e.title)}</h3>
+          <div class="org">${esc(e.org)}</div>
+          <ul>${e.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+        </div>
+      </article>`).join('')}
+  </section>
+
+  <section>
+    <div class="eyebrow">Core strengths</div>
+    ${Object.entries(strengths).map(([k, v]) => `
+      <h3 style="margin-top:18px">${esc(k)}</h3>
+      <div class="chips">${v.map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</div>`).join('')}
+  </section>
+
+  <section>
+    <div class="eyebrow">Speaking &amp; recognition</div>
+    <div class="rows">
+      ${speaking.map((s) => `
+        <div class="row"><span class="y">${esc(s.y)}</span><span class="t">${esc(s.t)}</span><span class="badge">${esc(s.tag)}</span></div>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Writing · medium.com/@nvkudva</div>
+    <div class="rows">
+      ${writing.map((w) => `
+        <a class="row" href="${w.u}" target="_blank" rel="noopener noreferrer"><span class="y">${esc(w.d.split(' ')[1])}</span><span class="t">${esc(w.t)}</span><span class="badge">Read ↗</span></a>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Education</div>
+    <div class="rows">
+      ${education.map((e) => `
+        <div class="row"><span class="y">${esc(e.y.slice(0, 4))}</span><span class="t"><b style="color:var(--ink)">${esc(e.d)}</b> — ${esc(e.o)}</span><span class="badge">${esc(e.y)}</span></div>`).join('')}
+    </div>
+  </section>`;
+
+/* ------------------------------------------------------------------ */
+
+export const contactView = () => `
+  <section style="padding-top:58px">
+    <div class="eyebrow">Contact</div>
+    <h1 style="font-size:clamp(30px,4vw,44px)">Let's talk</h1>
+    <p class="lede" style="margin-top:18px">
+      I'm open to senior engineering leadership roles driving AI-forward platform and product engineering at scale.
+      Fastest route is email — I reply within a day.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:${profile.email}">${esc(profile.email)}</a>
+      ${profile.phones.map((p) => `<a class="btn" href="tel:${p.replace(/\s/g, '')}">${esc(p)}</a>`).join('')}
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Everywhere else</div>
+    ${socialRow()}
+  </section>`;
+
+export const notFound = () => `
+  <section style="padding-top:58px">
+    <div class="eyebrow">404</div>
+    <h1>That page doesn't exist</h1>
+    <p class="lede">The link may be old, or I may have moved things around.</p>
+    <div class="cta"><a class="btn primary" href="/" data-link>Back to overview</a></div>
+  </section>`;
