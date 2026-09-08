@@ -126,12 +126,11 @@ button{font:inherit}
 :root[data-skin="cyber"] .skin button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent)}
 
 /* ============================================================ main */
-main{padding:0 clamp(20px,4vw,64px) 110px; max-width:1180px}
-section{padding:70px 0; border-bottom:1px solid var(--line)}
-section:last-of-type{border-bottom:0}
+main{padding:0 clamp(20px,4vw,64px) 70px; max-width:1180px}
+section{padding:42px 0}
 .eyebrow{
   font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--muted); display:flex; align-items:center; gap:12px; margin-bottom:24px;
+  color:var(--muted); display:flex; align-items:center; gap:12px; margin-bottom:18px;
 }
 .eyebrow::after{content:""; height:1px; flex:1; background:var(--line)}
 h1{font-size:clamp(36px,5.4vw,62px); line-height:1.03; letter-spacing:-.035em; font-weight:600; margin:0; text-wrap:balance}
@@ -141,7 +140,7 @@ p{color:var(--ink-2); max-width:64ch; margin:0 0 15px}
 .sublede{color:var(--muted); max-width:66ch; margin:-4px 0 0}
 
 /* ---- hero ---- */
-.hero{padding-top:58px; display:grid; grid-template-columns:minmax(0,1fr) 236px; gap:48px; align-items:start; border-bottom:1px solid var(--line)}
+.hero{padding-top:44px; display:grid; grid-template-columns:minmax(0,1fr) 236px; gap:48px; align-items:start}
 .statusline{font-family:var(--mono); font-size:12px; color:var(--muted); display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:22px}
 .statusline b{color:var(--pos); font-weight:500}
 .lede{font-size:18.5px; line-height:1.58; color:var(--ink-2); max-width:58ch; margin-top:20px}

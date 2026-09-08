@@ -148,7 +148,10 @@ export const projects = [
   },
   {
     name: 'gym-budy-claude', title: 'Gym Buddy', lang: 'TypeScript', updated: '2026-09-07',
-    status: 'no-deployment',
+    status: 'live',
+    deployUrl: 'https://gymbuddy-600845087494.us-west1.run.app/',
+    host: 'Google Cloud Run',
+    shot: '/public/shots/gym-buddy.jpg',
     desc: 'AI-powered gym exercise tracker with a glass UI, personalized weekly plans via Gemini, and an AI coach chatbot.',
   },
   {

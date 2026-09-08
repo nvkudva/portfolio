@@ -15,6 +15,12 @@ const FLOWS = {
   SmartFin: { click: ['Continue as Priya'], settle: 3500 },
   'AI-Doctor': { click: ['Alex Kumar'], settle: 4000 },
   AgentOS: { url: 'https://8e153e2b.agentos-cx9.pages.dev', settle: 3000 },
+  /* Gym Buddy gates on a profile form, then generates a plan via Gemini. */
+  'gym-budy-claude': {
+    fill: [['Your name', 'Vijay']],
+    click: ['Create My Plan'],
+    settle: 20000,
+  },
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -37,6 +43,16 @@ async function clickText(page, text) {
   return true;
 }
 
+/* Types into the input whose placeholder matches. */
+async function fillByPlaceholder(page, placeholder, value) {
+  const sel = `input[placeholder*="${placeholder}" i], textarea[placeholder*="${placeholder}" i]`;
+  const el = await page.$(sel);
+  if (!el) return false;
+  await el.click();
+  await el.type(value, { delay: 25 });
+  return true;
+}
+
 const wanted = process.argv.slice(2);
 const targets = projects.filter(
   (p) => p.shot && (wanted.length ? wanted.includes(p.name) : p.status === 'live' || FLOWS[p.name]),
@@ -45,6 +61,9 @@ const targets = projects.filter(
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: 'shell',
+  /* Apps that animate continuously can stall captureScreenshot past the
+     default 30s protocol timeout. */
+  protocolTimeout: 180000,
   args: ['--hide-scrollbars', '--force-color-profile=srgb'],
 });
 
@@ -60,6 +79,12 @@ for (const p of targets) {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
     await sleep(1500);
 
+    for (const [ph, val] of flow.fill || []) {
+      const hit = await fillByPlaceholder(page, ph, val);
+      process.stdout.write(hit ? `[filled "${ph}"] ` : `[MISS field "${ph}"] `);
+    }
+    if (flow.fill) await sleep(600);
+
     for (const label of flow.click || []) {
       const hit = await clickText(page, label);
       process.stdout.write(hit ? `[clicked "${label}"] ` : `[MISS "${label}"] `);
@@ -67,7 +92,19 @@ for (const p of targets) {
     }
     await sleep(flow.click ? 500 : (flow.settle ?? 1200));
 
-    await page.screenshot({ path: `.${p.shot.replace(/\.jpg$/, '.png')}`, type: 'png' });
+    /* A running animation can keep the compositor from ever producing a
+       stable frame, which stalls captureScreenshot. Freeze everything first,
+       and capture from the renderer rather than the OS surface. */
+    await page.addStyleTag({
+      content: '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}',
+    });
+    await sleep(400);
+    await page.screenshot({
+      path: `.${p.shot.replace(/\.jpg$/, '.png')}`,
+      type: 'png',
+      captureBeyondViewport: false,
+      fromSurface: false,
+    });
     console.log('ok');
   } catch (e) {
     console.log(`FAILED — ${e.message.split('\n')[0]}`);
