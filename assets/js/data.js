@@ -113,25 +113,65 @@ export const platforms = [
 
 /* Public GitHub repos. Descriptions marked `draft: true` are my inference —
    rewrite them in your own words. Everything else came from GitHub itself. */
+/* `deployUrl` drives both the QR code and the screenshot. `status`:
+   live | no-deployment | broken-deployment | not-web.
+   Descriptions below were rewritten from the actual running apps, except
+   where `draft: true` still marks an inference. */
 export const projects = [
-  { name: 'SmartFin', lang: 'TypeScript', updated: '2026', private: true, draft: true,
-    desc: 'Personal finance intelligence — turning raw transactions into the picture a spreadsheet never gives you.' },
-  { name: 'Smart-News', lang: 'TypeScript', updated: '2026-09-08', draft: true,
-    desc: 'A news reader that summarizes and clusters stories instead of ranking them by outrage.' },
-  { name: 'bhagavad-geeta', lang: 'TypeScript', updated: '2026-09-07', draft: true,
-    desc: 'The Bhagavad Gita as a reading app — verse, transliteration and commentary, built to be studied rather than skimmed.' },
-  { name: 'AgentOS', lang: 'TypeScript', updated: '2026-09-07', draft: true,
-    desc: 'An operating layer for multi-agent systems — orchestration, tooling and state for agents that work together rather than one prompt at a time.' },
-  { name: 'gym-budy-claude', lang: 'TypeScript', updated: '2026-09-07',
-    desc: 'AI-powered gym exercise tracker with a glass UI, personalized weekly plans via Gemini, and an AI coach chatbot.' },
-  { name: 'AI-Doctor', lang: 'TypeScript', updated: '2026-09-08', draft: true,
-    desc: 'Conversational clinical triage: symptom intake and guided consultation built on an LLM, aimed at the pre-appointment gap.' },
-  { name: 'Sahay', lang: 'TypeScript', updated: '2026-09-08', draft: true,
-    desc: 'An assistant built around help-seeking — Sahay is Sanskrit for support.' },
-  { name: 'SuperVoiceBoard', lang: 'Kotlin', updated: '2026-09-07', license: 'GPL-3.0',
-    desc: 'Voice-first Android keyboard: HeliBoard’s typing engine with on-device voice intelligence.' },
-  { name: 'ask-my-brain', lang: 'HTML', updated: '2026-09-07', draft: true,
-    desc: 'A personal RAG surface — ask questions against your own accumulated notes and documents.' },
+  {
+    name: 'SmartFin', title: 'SmartFin', lang: 'TypeScript', updated: '2026-08-27',
+    private: true, status: 'live',
+    deployUrl: 'https://smartfin.nvkudva.workers.dev',
+    shot: '/public/shots/smartfin.jpg',
+    desc: 'Impact intelligence for financial teams. Role-based workspaces — relationship manager, analyst, auditor — each seeing the same portfolio through the lens their job actually needs.',
+  },
+  {
+    name: 'Smart-News', title: 'SmartNews', lang: 'TypeScript', updated: '2026-09-08',
+    status: 'live',
+    deployUrl: 'https://smartnews.nvkudva.workers.dev',
+    shot: '/public/shots/smart-news.jpg',
+    desc: 'A news reader that clusters one story across every outlet covering it — eight sources collapsed into a single card with a neutral summary, filtered by locality rather than by outrage.',
+  },
+  {
+    name: 'bhagavad-geeta', title: 'Bhagavad Geeta', lang: 'TypeScript', updated: '2026-09-07',
+    status: 'live',
+    deployUrl: 'https://bhagavad-geeta.nvkudva.workers.dev',
+    shot: '/public/shots/bhagavad-geeta.jpg',
+    desc: 'All 18 chapters in Devanagari with English, Kannada and Telugu alongside. Verse search, a daily verse, adjustable reading size — built to be studied, not skimmed.',
+  },
+  {
+    name: 'AgentOS', title: 'AgentOS', lang: 'TypeScript', updated: '2026-09-07',
+    status: 'broken-deployment', draft: true,
+    deployUrl: 'https://agentos-cx9.pages.dev',
+    desc: 'An operating layer for multi-agent systems — orchestration, tooling and shared state for agents that work together rather than one prompt at a time.',
+  },
+  {
+    name: 'gym-budy-claude', title: 'Gym Buddy', lang: 'TypeScript', updated: '2026-09-07',
+    status: 'no-deployment',
+    desc: 'AI-powered gym exercise tracker with a glass UI, personalized weekly plans via Gemini, and an AI coach chatbot.',
+  },
+  {
+    name: 'AI-Doctor', title: 'CityCare — AI Doctor', lang: 'TypeScript', updated: '2026-09-08',
+    status: 'live',
+    deployUrl: 'https://ai-doctor-8ai.pages.dev',
+    shot: '/public/shots/ai-doctor.jpg',
+    desc: 'A hospital-branded virtual visit. No intake forms — you talk to Dr. Mira, and a licensed doctor reviews every plan before it reaches the patient.',
+  },
+  {
+    name: 'Sahay', title: 'Sahay', lang: 'TypeScript', updated: '2026-09-08',
+    status: 'no-deployment', draft: true,
+    desc: 'An assistant built around help-seeking — Sahay is Sanskrit for support.',
+  },
+  {
+    name: 'SuperVoiceBoard', title: 'SuperVoiceBoard', lang: 'Kotlin', updated: '2026-09-07',
+    license: 'GPL-3.0', status: 'not-web',
+    desc: 'Voice-first Android keyboard: HeliBoard’s typing engine with on-device voice intelligence.',
+  },
+  {
+    name: 'ask-my-brain', title: 'Ask My Brain', lang: 'HTML', updated: '2026-09-07',
+    status: 'no-deployment', draft: true,
+    desc: 'A personal RAG surface — ask questions against your own accumulated notes and documents.',
+  },
 ];
 
 export const experience = [

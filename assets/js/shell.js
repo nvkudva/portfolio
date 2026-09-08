@@ -40,10 +40,7 @@ const console_ = () => `
           <button data-act="skin:pro">EXECUTIVE</button>
           <button data-act="skin:cyber">OVERDRIVE</button>
         </div>
-        <div class="skin" role="group" aria-label="Light or dark">
-          <button data-act="mode:light">LIGHT</button>
-          <button data-act="mode:dark">DARK</button>
-        </div>
+        <button class="tsw" data-act="mode:toggle" role="switch" title="Toggle dark mode" aria-label="Dark mode"><i></i></button>
       </div>
 
       <div class="railfoot">
@@ -67,7 +64,7 @@ const kinetic = () => `
       <ul data-nav>
         ${NAV.map(([h, t]) => `<li><a href="${h}" data-link>${t}</a></li>`).join('')}
       </ul>
-      <button class="k-switch k-mode" data-act="mode:toggle"><span data-mode-name>Day</span></button>
+      <button class="tsw" data-act="mode:toggle" role="switch" title="Toggle dark mode" aria-label="Dark mode"><i></i></button>
       <button class="k-switch" data-act="skin:toggle"><span data-skin-name>Executive</span><span class="k-orb"></span></button>
     </div>
   </header>
@@ -90,16 +87,13 @@ export function syncShell() {
     const act = b.dataset.act;
     if (act === 'skin:pro') b.setAttribute('aria-pressed', String(!cyber));
     if (act === 'skin:cyber') b.setAttribute('aria-pressed', String(cyber));
-    if (act === 'mode:light') b.setAttribute('aria-pressed', String(!dark));
-    if (act === 'mode:dark') b.setAttribute('aria-pressed', String(dark));
+    if (act === 'mode:toggle') b.setAttribute('aria-checked', String(dark));
     if (act === 'layout:console') b.setAttribute('aria-pressed', String(r.dataset.layout !== 'kinetic'));
     if (act === 'layout:kinetic') b.setAttribute('aria-pressed', String(r.dataset.layout === 'kinetic'));
   });
 
   const sn = document.querySelector('[data-skin-name]');
   if (sn) sn.textContent = cyber ? 'Overdrive' : 'Executive';
-  const mn = document.querySelector('[data-mode-name]');
-  if (mn) mn.textContent = dark ? 'Night' : 'Day';
 }
 
 /* Kinetic's cursor halo. Pointer-fine only, and never for reduced motion. */

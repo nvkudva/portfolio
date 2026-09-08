@@ -2,6 +2,7 @@ import {
   profile, stats, tenets, platforms, projects,
   experience, strengths, speaking, writing, education, socials, icons,
 } from './data.js';
+import { qr } from './qr.js';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const svg = (k) => `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="${icons[k]}"/></svg>`;
@@ -102,21 +103,31 @@ export const projectsView = () => `
     ${head('Selected<br>repositories', 'github.com/nvkudva<br>drag or scroll →')}
     <div class="k-rail">
       ${projects.map((p, i) => {
-        const open = p.private
-          ? '<article class="k-repo">'
-          : `<a class="k-repo" href="https://github.com/nvkudva/${p.name}" target="_blank" rel="noopener noreferrer">`;
-        return `${open}
+        const st = { live:['Live','ok'], 'broken-deployment':['Deploy broken','warn'],
+                     'no-deployment':['Not deployed','off'], 'not-web':['Android app','off'] }[p.status]
+                   || ['Not deployed','off'];
+        return `
+        <article class="k-repo">
+          <div class="k-shot">
+            ${p.shot
+              ? `<img src="${p.shot}" alt="Screenshot of ${esc(p.title)}" loading="lazy" decoding="async" width="1100" height="688">`
+              : `<div class="k-noshot">${esc(p.title)}</div>`}
+          </div>
           <span class="k-no">${String(i + 1).padStart(2, '0')} / ${esc((p.lang || 'REPO').toUpperCase())}</span>
-          <h3>${esc(p.name)}</h3>
+          <h3>${esc(p.title)}</h3>
           <p>${esc(p.desc)}</p>
           <div class="k-stack">
-            ${p.lang ? `<i>${esc(p.lang)}</i>` : ''}
-            ${p.license ? `<i>${esc(p.license)}</i>` : ''}
-            ${p.private ? '<i>🔒 private</i>' : ''}
+            <i class="${st[1]}">${esc(st[0])}</i>
+            ${p.private ? '<i>\u{1F512} private</i>' : ''}
             ${p.draft ? '<i>draft copy</i>' : ''}
           </div>
-          <div class="k-foot"><span>${esc(p.updated)}</span>${p.private ? '' : '<span class="k-arw">→</span>'}</div>
-        ${p.private ? '</article>' : '</a>'}`;
+          <div class="k-foot">
+            ${p.status === 'live' && p.deployUrl
+              ? `<a class="k-qr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)}">${qr[p.name] || ''}</a>
+                 <a class="k-open" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">Open live <span class="k-arw">\u2192</span></a>`
+              : `<span class="k-none">${p.status === 'broken-deployment' ? 'Deploy returns 404' : 'No deployment'}</span>`}
+          </div>
+        </article>`;
       }).join('')}
     </div>
   </section>`;

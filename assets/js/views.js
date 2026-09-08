@@ -2,6 +2,7 @@ import {
   profile, stats, tenets, platforms, projects,
   experience, strengths, speaking, writing, education, socials, icons,
 } from './data.js';
+import { qr } from './qr.js';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const svg = (k) => `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="${icons[k]}"/></svg>`;
@@ -15,6 +16,56 @@ const portrait = () => `
     </div>
     <div class="portcap">Drop a photo at<br>/assets/img/portrait.jpg</div>
   </div>`;
+
+const STATUS = {
+  live: ['Live', 'ok'],
+  'broken-deployment': ['Deploy broken', 'warn'],
+  'no-deployment': ['Not deployed', 'off'],
+  'not-web': ['Android app', 'off'],
+};
+
+/* Project card: screenshot, copy, and a QR to the live URL. */
+function card(p, i) {
+  const [label, tone] = STATUS[p.status] || STATUS['no-deployment'];
+  const repo = `https://github.com/nvkudva/${p.name}`;
+  const shot = p.shot
+    ? `<img src="${p.shot}" alt="Screenshot of ${esc(p.title)}" loading="lazy" decoding="async" width="1100" height="688">`
+    : `<div class="noshot"><span>${esc(p.title)}</span><small>${esc(label)}</small></div>`;
+
+  return `
+    <article class="pcard">
+      <div class="pshot">${shot}<span class="pno">${String(i + 1).padStart(2, '0')}</span></div>
+      <div class="pbody">
+        <div class="phead">
+          <h3>${esc(p.title)}</h3>
+          <span class="pstat ${tone}">${esc(label)}</span>
+        </div>
+        <p>${esc(p.desc)}</p>
+        <div class="tags">
+          ${p.lang ? `<span class="tag lang">${esc(p.lang)}</span>` : ''}
+          ${p.license ? `<span class="tag">${esc(p.license)}</span>` : ''}
+          ${p.private ? '<span class="tag lock">private repo</span>' : ''}
+          ${p.draft ? '<span class="tag draft">description draft</span>' : ''}
+        </div>
+        <div class="pfoot">
+          ${p.status === 'live' && p.deployUrl
+            ? `<a class="pqr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)}">
+                 ${qr[p.name] || ''}
+               </a>
+               <div class="plinks">
+                 <a href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">Open live ↗</a>
+                 <small>${esc(p.deployUrl.replace('https://', ''))}</small>
+                 ${p.private ? '' : `<a href="${repo}" target="_blank" rel="noopener noreferrer">Source ↗</a>`}
+               </div>`
+            : `<div class="plinks nodeploy">
+                 <span>${p.status === 'broken-deployment' ? 'Deployment returns 404' : 'No production deployment yet'}</span>
+                 ${p.deployUrl ? `<a href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${esc(p.deployUrl.replace('https://',''))} \u2197</a>` : ''}
+                 ${p.private ? '' : `<a href="${repo}" target="_blank" rel="noopener noreferrer">Source ↗</a>`}
+               </div>`}
+        </div>
+      </div>
+    </article>`;
+}
 
 const socialRow = () => `
   <div class="links">
@@ -96,30 +147,11 @@ export const projectsView = () => `
   </section>
 
   <section>
-    <div class="eyebrow">Open source · github.com/nvkudva</div>
+    <div class="eyebrow">Personal projects · built since May 2025</div>
     <h2>What I'm building now</h2>
-    <p class="sublede" style="margin-bottom:24px">Since May 2025 I've been hands-on with applied AI. These are public repos, most of them active this month.</p>
-    <div>
-      ${projects.map((p, i) => {
-        /* private repos get no link — the URL would 404 for anyone but him */
-        const open = p.private
-          ? '<article class="repo is-private">'
-          : `<a class="repo" href="https://github.com/nvkudva/${p.name}" target="_blank" rel="noopener noreferrer">`;
-        return `${open}
-          <span class="idx">${String(i + 1).padStart(2, '0')}</span>
-          <div>
-            <h3>${esc(p.name)}${p.private ? '' : ' <span class="go">→</span>'}</h3>
-            <p>${esc(p.desc)}</p>
-            <div class="tags">
-              ${p.lang ? `<span class="tag lang">${esc(p.lang)}</span>` : ''}
-              ${p.license ? `<span class="tag">${esc(p.license)}</span>` : ''}
-              ${p.private ? '<span class="tag lock">private repo</span>' : ''}
-              ${p.draft ? '<span class="tag draft">description draft</span>' : ''}
-            </div>
-          </div>
-          <div class="meta">updated<br>${esc(p.updated)}</div>
-        ${p.private ? '</article>' : '</a>'}`;
-      }).join('')}
+    <p class="sublede" style="margin-bottom:28px">Hands-on applied AI. Scan a code to open the live app on your phone.</p>
+    <div class="pgrid">
+      ${projects.map((p, i) => card(p, i)).join('')}
     </div>
     <div class="cta">
       <a class="btn" href="https://github.com/nvkudva?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories on GitHub ↗</a>

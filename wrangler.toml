@@ -1,0 +1,8 @@
+name = "portfolio"
+compatibility_date = "2026-09-08"
+
+# Static-asset Worker: no server code, Cloudflare serves the files directly.
+[assets]
+directory = "./"
+# Unknown paths return index.html so /projects, /resume and /contact survive a refresh.
+not_found_handling = "single-page-application"

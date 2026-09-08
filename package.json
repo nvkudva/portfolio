@@ -1,0 +1,25 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Zero-dependency PWA. No build step, no framework, no `node_modules`. Four routes rendered client-side, animated with the View Transitions API, cached by a service worker so repeat visits are instant and it works offline.",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nvkudva/portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/nvkudva/portfolio/issues"
+  },
+  "homepage": "https://github.com/nvkudva/portfolio#readme",
+  "private": "true",
+  "devDependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

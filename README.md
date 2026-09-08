@@ -31,6 +31,25 @@ replace the `.ph` placeholder div with:
 <img src="/assets/img/portrait.jpg" alt="Vijay Krishna Kudva">
 ```
 
+## Projects, screenshots and QR codes
+
+Each featured project renders a screenshot of the running app and a QR code
+to its live URL. Both are generated ahead of time — nothing is fetched at
+runtime, and the page ships no QR library.
+
+```bash
+node scripts/shoot.mjs      # re-capture screenshots of every live deployment
+node scripts/make-qr.mjs    # regenerate assets/js/qr.js from data.js
+```
+
+Screenshots use the Cloudflare Browser Rendering API (no Playwright install).
+QR modules are drawn with `currentColor`, so they re-tint with the active
+persona instead of shipping one image per theme.
+
+A project only gets a QR when its `status` is `live`. Anything else renders a
+placeholder tile — see [DEPLOYMENT_GAPS.md](DEPLOYMENT_GAPS.md) for what is
+missing and why.
+
 ## Icons
 
 `node scripts/make-icons.mjs` regenerates the PNG app icons from the VK mark.

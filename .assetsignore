@@ -1,0 +1,11 @@
+.git
+.gitignore
+.claude
+.DS_Store
+mocks
+scripts
+node_modules
+README.md
+V2_FEATURES.md
+wrangler.toml
+.assetsignore
