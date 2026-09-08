@@ -269,3 +269,17 @@
 [data-layout="kinetic"] .tsw i{background:var(--kmuted)}
 [data-layout="kinetic"] .tsw[aria-checked="true"] i{background:var(--hot)}
 [data-layout="kinetic"] .tsw:hover{border-color:var(--hot)}
+
+/* ---- two destinations per project ---- */
+.k-acts2{display:flex; gap:8px; margin-left:auto}
+.k-act{
+  display:flex; align-items:center; gap:7px; padding:9px 14px; border-radius:999px;
+  border:1px solid var(--edge); color:var(--kink-2);
+  font-family:var(--kmono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  white-space:nowrap; transition:border-color .3s var(--kease), color .3s, background .3s, transform .3s var(--kease);
+}
+.k-act svg{width:12px; height:12px; fill:currentColor; flex:none}
+.k-act:hover{border-color:var(--hot); color:var(--hot); transform:translateY(-2px)}
+.k-act.live:hover{background:var(--hot); color:var(--void)}
+.k-act.off{color:var(--kmuted); border-style:dashed; cursor:not-allowed}
+.k-act.off:hover{transform:none; border-color:var(--edge); color:var(--kmuted); background:transparent}

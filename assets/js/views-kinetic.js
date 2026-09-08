@@ -123,9 +123,16 @@ export const projectsView = () => `
           </div>
           <div class="k-foot">
             ${p.status === 'live' && p.deployUrl
-              ? `<a class="k-qr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)}">${qr[p.name] || ''}</a>
-                 <a class="k-open" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">Open live <span class="k-arw">\u2192</span></a>`
-              : `<span class="k-none">${p.status === 'broken-deployment' ? 'Deploy returns 404' : 'No deployment'}</span>`}
+              ? `<a class="k-qr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone">${qr[p.name] || ''}</a>`
+              : ''}
+            <div class="k-acts2">
+              ${p.status === 'live' && p.deployUrl
+                ? `<a class="k-act live" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${svg('live')}Live</a>`
+                : `<span class="k-act off">${svg('live')}${esc(p.status === 'broken-deployment' ? 'Deploy 404' : p.status === 'not-web' ? 'Android' : 'Not live')}</span>`}
+              ${p.private
+                ? `<span class="k-act off">${svg('github')}Private</span>`
+                : `<a class="k-act" href="https://github.com/nvkudva/${p.name}" target="_blank" rel="noopener noreferrer">${svg('github')}Source</a>`}
+            </div>
           </div>
         </article>`;
       }).join('')}

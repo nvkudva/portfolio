@@ -24,6 +24,25 @@ const STATUS = {
   'not-web': ['Android app', 'off'],
 };
 
+/* Two destinations per project, as one split control: the running app on the
+   left, the code on the right. A half that has nowhere to go is disabled and
+   says why, rather than being hidden. */
+function actions(p, repo) {
+  const liveOn = p.status === 'live' && p.deployUrl;
+  const liveWhy = p.status === 'broken-deployment' ? 'Deploy 404'
+    : p.status === 'not-web' ? 'Android app' : 'Not deployed';
+
+  const live = liveOn
+    ? `<a class="pact" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${svg('live')}Live site</a>`
+    : `<span class="pact off" aria-disabled="true">${svg('live')}${esc(liveWhy)}</span>`;
+
+  const source = p.private
+    ? `<span class="pact off" aria-disabled="true">${svg('github')}Private</span>`
+    : `<a class="pact" href="${repo}" target="_blank" rel="noopener noreferrer">${svg('github')}Source</a>`;
+
+  return `<div class="pacts">${live}${source}</div>`;
+}
+
 /* Project card: screenshot, copy, and a QR to the live URL. */
 function card(p, i) {
   const [label, tone] = STATUS[p.status] || STATUS['no-deployment'];
@@ -49,19 +68,14 @@ function card(p, i) {
         </div>
         <div class="pfoot">
           ${p.status === 'live' && p.deployUrl
-            ? `<a class="pqr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)}">
-                 ${qr[p.name] || ''}
-               </a>
-               <div class="plinks">
-                 <a href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">Open live ↗</a>
-                 <small>${esc(p.deployUrl.replace('https://', ''))}</small>
-                 ${p.private ? '' : `<a href="${repo}" target="_blank" rel="noopener noreferrer">Source ↗</a>`}
-               </div>`
-            : `<div class="plinks nodeploy">
-                 <span>${p.status === 'broken-deployment' ? 'Deployment returns 404' : 'No production deployment yet'}</span>
-                 ${p.deployUrl ? `<a href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${esc(p.deployUrl.replace('https://',''))} \u2197</a>` : ''}
-                 ${p.private ? '' : `<a href="${repo}" target="_blank" rel="noopener noreferrer">Source ↗</a>`}
-               </div>`}
+            ? `<a class="pqr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone" title="Scan or click to open ${esc(p.title)}">${qr[p.name] || ''}</a>`
+            : ''}
+          <div class="pstack">
+            ${actions(p, repo)}
+            <small class="phost">${p.deployUrl
+              ? esc(p.deployUrl.replace(/^https:\/\//, '').replace(/\/$/, '')) + (p.host ? ` · ${esc(p.host)}` : '')
+              : `github.com/nvkudva/${esc(p.name)}`}</small>
+          </div>
         </div>
       </div>
     </article>`;
