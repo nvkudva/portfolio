@@ -76,6 +76,8 @@
 
 /* ---------------------------------------------------------- header */
 .k-head{position:fixed; top:0; left:0; right:0; z-index:40}
+[data-layout="kinetic"] .pane{scroll-margin-top:calc(var(--stick, 0px) + 24px)}
+[data-layout="kinetic"] .pane + .pane{border-top:0}
 .k-nav{
   display:flex; align-items:center; gap:20px; padding:16px clamp(18px,4vw,54px);
   background:linear-gradient(to bottom,var(--void) 12%,transparent);
@@ -110,8 +112,10 @@
 
 /* ---------------------------------------------------------- type */
 [data-layout="kinetic"] main{padding:0; max-width:none}
-[data-layout="kinetic"] section{padding:88px 0; border-bottom:0}
+[data-layout="kinetic"] section{padding:56px 0; border-bottom:0}
 .k-hero{padding:116px 0 60px !important; position:relative}
+.pane + .pane .k-hero{padding-top:48px !important}
+.pane + .pane > section:first-child{padding-top:48px}
 .k-tagline{font-family:var(--kmono); font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--hot); margin-bottom:22px; display:flex; gap:14px; align-items:center}
 .k-tagline::after{content:""; height:1px; width:78px; background:currentColor; opacity:.5}
 [data-layout="kinetic"] h1{

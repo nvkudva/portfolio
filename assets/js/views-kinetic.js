@@ -234,3 +234,13 @@ export const notFound = () => `
     <h1 style="font-size:clamp(52px,11vw,150px)">Nothing <span class="k-fill">here</span>.</h1>
     <div class="k-acts"><a class="k-mag solid" href="/" data-link>Back to overview</a></div>
   </section>`;
+
+/* ------------------------------------------------------------------ */
+
+/* One scrollable document. Each pane is a scroll target for the nav. */
+export const page = () => `
+  <div class="pane" id="overview">${home()}</div>
+  <div class="pane" id="resume">${resumeView()}</div>
+  <div class="pane" id="projects">${projectsView()}</div>
+  <div class="pane" id="building">${buildingView()}</div>
+  <div class="pane" id="contact">${contactView()}</div>`;
