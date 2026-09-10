@@ -89,6 +89,10 @@
 .k-nav ul a:hover::before,.k-nav ul a[aria-current]::before{transform:scaleX(1); transform-origin:left}
 .k-nav ul a[aria-current]{color:var(--kink)}
 
+.k-hail{display:flex; gap:16px; font-family:var(--kmono); font-size:10px; letter-spacing:.08em}
+.k-hail a{color:var(--kmuted); transition:color .3s}
+.k-hail a:hover{color:var(--hot)}
+
 .k-switch{
   display:flex; align-items:center; gap:8px; padding:7px 8px 7px 15px;
   border:1px solid var(--edge); border-radius:999px;
@@ -229,6 +233,8 @@
 
 @media (max-width:900px){
   .k-nav ul{display:none}
+  .k-nav{flex-wrap:wrap}
+  .k-hail{order:5; width:100%; gap:10px; font-size:9px}
   .k-nav{gap:10px}
   .k-mark{margin-right:auto}
   .k-herofoot{grid-template-columns:1fr; gap:30px}
@@ -238,6 +244,10 @@
 }
 @media (max-width:760px){
   .k-socials{grid-auto-flow:row; grid-template-columns:1fr 1fr}
+}
+@media (max-width:620px){
+  .k-rail{flex-direction:column; overflow-x:visible; scroll-snap-type:none}
+  .k-repo{flex:0 0 auto; min-height:0}
 }
 @media (prefers-reduced-motion:reduce){
   [data-layout="kinetic"] *{animation-duration:.01ms !important; animation-iteration-count:1 !important}
@@ -266,9 +276,9 @@
 
 /* the tiny mode switch, in Kinetic's palette */
 [data-layout="kinetic"] .tsw{border-color:var(--edge); background:color-mix(in oklab,var(--stage) 70%,transparent)}
-[data-layout="kinetic"] .tsw i{background:var(--kmuted)}
-[data-layout="kinetic"] .tsw[aria-checked="true"] i{background:var(--hot)}
-[data-layout="kinetic"] .tsw:hover{border-color:var(--hot)}
+[data-layout="kinetic"] .tsw{color:var(--kmuted)}
+[data-layout="kinetic"] .tsw[aria-checked="true"]{color:var(--hot)}
+[data-layout="kinetic"] .tsw:hover{border-color:var(--hot); color:var(--hot)}
 
 /* ---- two destinations per project ---- */
 .k-acts2{display:flex; gap:8px; margin-left:auto}

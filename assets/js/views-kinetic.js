@@ -26,7 +26,7 @@ export const home = () => `
       <span class="k-slide"><span class="k-fill" style="animation-delay:.24s">on.</span></span>
     </h1>
 
-    <div class="k-herofoot">
+    <div class="k-herofoot" style="grid-template-columns:minmax(0,1fr)">
       <div class="k-up" style="animation-delay:.5s">
         <p class="k-blurb">
           <b>${esc(profile.name)} — 17+ years in technology, 6+ leading engineering orgs.</b>
@@ -36,13 +36,8 @@ export const home = () => `
         </p>
         <div class="k-acts">
           <a class="k-mag solid" href="${profile.resume}" download>Résumé ↓</a>
-          <a class="k-mag" href="/projects" data-link>See the work</a>
           <a class="k-mag" href="https://www.linkedin.com/in/nvkudva/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
-      </div>
-      <div class="k-up" style="animation-delay:.6s">
-        <div class="k-frame"><img src="/assets/img/portrait.jpg" alt="Vijay Krishna Kudva" width="1200" height="1600" fetchpriority="high"></div>
-        <div class="k-framecap">Bangalore, 2026</div>
       </div>
     </div>
 
@@ -97,6 +92,17 @@ export const projectsView = () => `
           </div>
         </article>`).join('')}
     </div>
+    <div class="k-acts" style="margin-top:34px">
+      <a class="k-mag" href="/building" data-link>What I'm building now →</a>
+    </div>
+  </section>`;
+
+/* ------------------------------------------------------------------ */
+
+export const buildingView = () => `
+  <section class="k-hero" style="padding-bottom:20px">
+    <div class="k-tagline">Personal projects · since May 2025</div>
+    <h1 style="font-size:clamp(46px,9vw,124px)">What I'm<br><span class="k-fill">building</span> now.</h1>
   </section>
 
   <section>

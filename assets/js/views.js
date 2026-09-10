@@ -96,8 +96,8 @@ export const home = () => `
   <section class="hero">
     <div>
       <div class="statusline rise">
-        <span>${esc(profile.location)} · ${esc(profile.timezone)}</span><span>·</span>
-        <span><b>●</b> ${esc(profile.status)}</span><span>·</span>
+        <span>${esc(profile.location)}</span><span class="sep">·</span>
+        <span><b>●</b> ${esc(profile.status)}</span><span class="sep">·</span>
         <span>${esc(profile.pedigree)}</span>
       </div>
       <h1 class="rise" style="animation-delay:.05s">${esc(profile.name)}</h1>
@@ -105,11 +105,9 @@ export const home = () => `
       <p class="lede rise" style="animation-delay:.14s" >${profile.lede[1]}</p>
       <div class="cta rise" style="animation-delay:.18s">
         <a class="btn primary" href="${profile.resume}" download>Download résumé ↓</a>
-        <a class="btn" href="/projects" data-link>See the work</a>
         <a class="btn" href="https://www.linkedin.com/in/nvkudva/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </div>
-    ${portrait()}
   </section>
 
   <section>
@@ -141,29 +139,39 @@ export const home = () => `
 /* ------------------------------------------------------------------ */
 
 export const projectsView = () => `
-  <section style="padding-top:58px">
+  <section style="padding-top:24px">
     <div class="eyebrow">Platforms · shipped at scale</div>
-    <h1 style="font-size:clamp(30px,4vw,44px)">Things I built, not things I approved</h1>
+    <h1 style="font-size:clamp(28px,4vw,44px)">Things I built, not things I approved</h1>
     <p class="sublede" style="margin-bottom:22px">Six platforms that carried real traffic, real agents and real revenue.</p>
     <div style="margin-top:24px">
       ${platforms.map((p) => `
         <article class="plat">
           <div>
             <div class="org">${esc(p.org)} <span>${esc(p.years)}</span></div>
-            <h3 style="font-size:18px">${esc(p.name)}</h3>
+            <h3>${esc(p.name)}</h3>
             <p>${esc(p.body)}</p>
           </div>
           <div class="mx">
+            <div class="mxh">Impact</div>
             ${p.metrics.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}
           </div>
         </article>`).join('')}
     </div>
+    <div class="cta">
+      <a class="btn" href="/building" data-link>What I'm building now →</a>
+    </div>
+  </section>`;
+
+/* ------------------------------------------------------------------ */
+
+export const buildingView = () => `
+  <section style="padding-top:24px">
+    <div class="eyebrow">Personal projects · built since May 2025</div>
+    <h1 style="font-size:clamp(28px,4vw,44px)">What I'm building now</h1>
+    <p class="sublede" style="margin-bottom:22px">Hands-on applied AI, shipped on evenings and weekends. Scan a code to open the live app on your phone.</p>
   </section>
 
-  <section>
-    <div class="eyebrow">Personal projects · built since May 2025</div>
-    <h2>What I'm building now</h2>
-    <p class="sublede" style="margin-bottom:28px">Hands-on applied AI. Scan a code to open the live app on your phone.</p>
+  <section style="padding-top:0">
     <div class="pgrid">
       ${projects.map((p, i) => card(p, i)).join('')}
     </div>
@@ -175,14 +183,9 @@ export const projectsView = () => `
 /* ------------------------------------------------------------------ */
 
 export const resumeView = () => `
-  <section style="padding-top:58px">
+  <section style="padding-top:24px">
     <div class="eyebrow">Résumé</div>
-    <h1 style="font-size:clamp(30px,4vw,44px)">Seventeen years, and still in the editor</h1>
-    <div class="dl" style="margin-top:26px">
-      <div class="f"><b>Vijay-Krishna-Kudva-Resume.pdf</b>${esc(profile.resumeMeta.size)} · ${esc(profile.resumeMeta.updated)}</div>
-      <a class="btn primary" href="${profile.resume}" download style="margin-left:auto">Download PDF ↓</a>
-      <a class="btn" href="${profile.resume}" target="_blank" rel="noopener noreferrer">Open in browser</a>
-    </div>
+    <h1 style="font-size:clamp(28px,4vw,44px)">Seventeen years, and still in the editor</h1>
   </section>
 
   <section>
@@ -232,9 +235,9 @@ export const resumeView = () => `
 /* ------------------------------------------------------------------ */
 
 export const contactView = () => `
-  <section style="padding-top:58px">
+  <section style="padding-top:24px">
     <div class="eyebrow">Contact</div>
-    <h1 style="font-size:clamp(30px,4vw,44px)">Let's talk</h1>
+    <h1 style="font-size:clamp(28px,4vw,44px)">Let's talk</h1>
     <p class="lede" style="margin-top:18px">
       I'm open to senior engineering leadership roles driving AI-forward platform and product engineering at scale.
       Fastest route is email — I reply within a day.
@@ -251,7 +254,7 @@ export const contactView = () => `
   </section>`;
 
 export const notFound = () => `
-  <section style="padding-top:58px">
+  <section style="padding-top:24px">
     <div class="eyebrow">404</div>
     <h1>That page doesn't exist</h1>
     <p class="lede">The link may be old, or I may have moved things around.</p>

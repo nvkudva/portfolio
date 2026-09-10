@@ -11,10 +11,11 @@ const state = {
   mode: root.dataset.mode === 'dark' ? 'dark' : 'light',
 };
 
-const ROUTES = ['/', '/projects', '/resume', '/contact'];
+const ROUTES = ['/', '/resume', '/projects', '/building', '/contact'];
 const TITLES = {
   '/': 'Vijay Krishna Kudva — Engineering Leader',
   '/projects': 'Projects — Vijay Krishna Kudva',
+  '/building': 'Building — Vijay Krishna Kudva',
   '/resume': 'Résumé — Vijay Krishna Kudva',
   '/contact': 'Contact — Vijay Krishna Kudva',
 };
@@ -25,6 +26,7 @@ function viewFor(path) {
   const v = views();
   if (path === '/') return v.home;
   if (path === '/projects') return v.projectsView;
+  if (path === '/building') return v.buildingView;
   if (path === '/resume') return v.resumeView;
   if (path === '/contact') return v.contactView;
   return v.notFound;
