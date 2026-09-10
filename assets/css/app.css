@@ -131,12 +131,15 @@ button{font:inherit}
 
 /* ============================================================ main */
 main{padding:0 clamp(20px,4vw,64px) 70px; max-width:1180px}
+.pane{scroll-margin-top:calc(var(--stick, 0px) + 16px)}
+.pane + .pane{border-top:1px solid var(--line)}
+/* The last pane needs room below it, or the nav can't bring it to the top. */
+.pane:last-child{min-height:calc(100vh - var(--stick, 0px))}
 section{padding:42px 0}
 .eyebrow{
   font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
   color:var(--muted); display:flex; align-items:center; gap:12px; margin-bottom:18px;
 }
-.eyebrow::after{content:""; height:1px; flex:1 0 32px; background:var(--line)}
 h1{font-size:clamp(36px,5.4vw,62px); line-height:1.03; letter-spacing:-.035em; font-weight:600; margin:0; text-wrap:balance}
 h2{font-size:clamp(23px,2.8vw,31px); letter-spacing:-.022em; font-weight:600; margin:0 0 12px; text-wrap:balance}
 h3{font-size:16px; font-weight:600; margin:0; letter-spacing:-.01em}

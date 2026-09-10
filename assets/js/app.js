@@ -2,6 +2,10 @@ import * as consoleViews from './views.js';
 import * as kineticViews from './views-kinetic.js';
 import { mountShell, syncShell, ambient } from './shell.js';
 
+/* The app decides where a load lands (a deep link is a scroll position now),
+   so the browser must not restore the previous one over the top of it. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
 const root = document.documentElement;
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 
@@ -11,7 +15,17 @@ const state = {
   mode: root.dataset.mode === 'dark' ? 'dark' : 'light',
 };
 
-const ROUTES = ['/', '/resume', '/projects', '/building', '/contact'];
+/* path <-> pane id. The site is one document; a route is a scroll position. */
+const ROUTES = [
+  ['/', 'overview'],
+  ['/resume', 'resume'],
+  ['/projects', 'projects'],
+  ['/building', 'building'],
+  ['/contact', 'contact'],
+];
+const idFor = (path) => (ROUTES.find(([p]) => p === path) || ROUTES[0])[1];
+const pathFor = (id) => (ROUTES.find(([, i]) => i === id) || ROUTES[0])[0];
+
 const TITLES = {
   '/': 'Vijay Krishna Kudva — Engineering Leader',
   '/projects': 'Projects — Vijay Krishna Kudva',
@@ -22,15 +36,6 @@ const TITLES = {
 
 const views = () => (state.layout === 'kinetic' ? kineticViews : consoleViews);
 
-function viewFor(path) {
-  const v = views();
-  if (path === '/') return v.home;
-  if (path === '/projects') return v.projectsView;
-  if (path === '/building') return v.buildingView;
-  if (path === '/resume') return v.resumeView;
-  if (path === '/contact') return v.contactView;
-  return v.notFound;
-}
 
 /* ---------------- persistence ---------------- */
 function save() {
@@ -46,20 +51,112 @@ function stamp() {
 }
 
 /* ---------------- render ---------------- */
-function paint(path) {
-  document.getElementById('main').innerHTML = viewFor(path)();
-  document.title = TITLES[path] || 'Not found — Vijay Krishna Kudva';
+function markNav(path) {
   document.querySelectorAll('[data-nav] a').forEach((a) => {
     if (new URL(a.href).pathname === path) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
+}
+
+/* The sticky rail (mobile) and the fixed kinetic header sit over the page,
+   so panes need to stop below them. */
+function stick() {
+  const k = document.querySelector('.k-head');
+  const rail = document.querySelector('.rail');
+  let h = 0;
+  if (k) h = k.getBoundingClientRect().height;
+  else if (rail && matchMedia('(max-width:960px)').matches) h = rail.getBoundingClientRect().height;
+  root.style.setProperty('--stick', `${Math.round(h)}px`);
+}
+
+/* Programmatic scrolls pass over every pane in between; the spy stays quiet
+   until the scroll settles so the nav doesn't strobe. */
+let locked = false;
+let unlock;
+function lock() {
+  locked = true;
+  clearTimeout(unlock);
+  unlock = setTimeout(() => { locked = false; }, 700);
+}
+
+let spy;
+function watchPanes() {
+  spy?.disconnect();
+  spy = new IntersectionObserver((entries) => {
+    if (locked) return;
+    const hit = entries.filter((e) => e.isIntersecting)[0];
+    if (!hit) return;
+    const path = pathFor(hit.target.id);
+    if (path === location.pathname) return;
+    history.replaceState({}, '', path);
+    document.title = TITLES[path];
+    markNav(path);
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  document.querySelectorAll('.pane').forEach((el) => spy.observe(el));
+}
+
+function paint() {
+  document.getElementById('main').innerHTML = views().page();
+  stick();
+  watchPanes();
+  markNav(location.pathname);
+  document.title = TITLES[location.pathname] || TITLES['/'];
   syncShell();
 }
 
+function jump(path, smooth) {
+  const el = document.getElementById(idFor(path));
+  if (!el) return;
+  const glide = smooth && !matchMedia('(prefers-reduced-motion:reduce)').matches;
+  lock();
+  snap(el, glide);
+  settle(el, ++trip);
+}
+
+/* `html { scroll-behavior: smooth }` outranks a behavior:'auto' option in some
+   engines, so an instant landing has to switch the CSS off around the scroll. */
+function snap(el, glide) {
+  if (glide) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  const prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  el.scrollIntoView({ block: 'start' });
+  root.style.scrollBehavior = prev;
+}
+
+/* Webfonts and lazy screenshots change the height of everything above the
+   target after the scroll has already landed, which leaves the section short
+   of the top. Re-align while the page settles — but yield the moment the
+   reader takes over. */
+let trip = 0;
+function settle(el, mine) {
+  const want = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  const events = ['wheel', 'touchstart', 'keydown'];
+  let live = true;
+  let last = -1;
+  const stop = () => { live = false; };
+  events.forEach((e) => addEventListener(e, stop, { passive: true }));
+
+  (function tick(n) {
+    /* A newer jump supersedes this one. */
+    if (!live || mine !== trip || n > 12) { events.forEach((e) => removeEventListener(e, stop)); return; }
+    const y = Math.round(scrollY);
+    /* Only correct once the scroll has stopped moving, so a smooth glide
+       isn't cut short. */
+    if (y === last && Math.abs(el.getBoundingClientRect().top - want) > 2) {
+      lock();
+      snap(el, false);
+    }
+    last = y;
+    setTimeout(() => tick(n + 1), 120);
+  }(0));
+}
+
 function remount() {
+  const here = location.pathname;
   mountShell(state.layout);
-  paint(location.pathname);
+  paint();
   ambient();
+  jump(here, false);
 }
 
 function animate(fn) {
@@ -77,7 +174,9 @@ function animate(fn) {
 
 function go(path, push = true) {
   if (push) history.pushState({}, '', path);
-  animate(() => { paint(path); window.scrollTo(0, 0); });
+  markNav(path);
+  document.title = TITLES[path] || TITLES['/'];
+  jump(path, push);
 }
 
 /* ---------------- interaction ---------------- */
@@ -106,10 +205,11 @@ document.addEventListener('click', (e) => {
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
   const path = new URL(a.href).pathname;
   e.preventDefault();
-  if (path !== location.pathname) go(path);
+  go(path);
 });
 
 addEventListener('popstate', () => go(location.pathname, false));
+addEventListener('resize', stick);
 
 stamp();
 remount();
