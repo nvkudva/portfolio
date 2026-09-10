@@ -141,8 +141,8 @@ export const projects = [
   },
   {
     name: 'AgentOS', title: 'AgentOS', lang: 'TypeScript', updated: '2026-09-07',
-    status: 'broken-deployment',
-    deployUrl: 'https://agentos-cx9.pages.dev',
+    status: 'live',
+    deployUrl: 'https://agentos.nvkudva.workers.dev',
     shot: '/public/shots/agentos.jpg',
     desc: 'Atrium — a desktop for running teams of agents. One room per function, each with a lead agent delegating to the rest, a dock of tools they share, and a single bar you talk to. Twenty agents, and you watch the work land.',
   },
