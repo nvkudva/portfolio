@@ -15,6 +15,7 @@ const FLOWS = {
   SmartFin: { click: ['Continue as Priya'], settle: 3500 },
   'AI-Doctor': { click: ['Alex Kumar'], settle: 4000 },
   AgentOS: { url: 'https://8e153e2b.agentos-cx9.pages.dev', settle: 3000 },
+  WaveKey: { url: 'https://nvkudva.github.io/WaveKey/', settle: 2500 },
   /* Gym Buddy gates on a profile form, then generates a plan via Gemini. */
   'gym-budy-claude': {
     fill: [['Your name', 'Vijay']],

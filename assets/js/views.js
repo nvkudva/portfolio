@@ -22,6 +22,7 @@ const STATUS = {
   'broken-deployment': ['Deploy broken', 'warn'],
   'no-deployment': ['Not deployed', 'off'],
   'not-web': ['Android app', 'off'],
+  'closed-source': ['Closed source', 'off'],
 };
 
 /* Two destinations per project, as one split control: the running app on the
@@ -30,14 +31,15 @@ const STATUS = {
 function actions(p, repo) {
   const liveOn = p.status === 'live' && p.deployUrl;
   const liveWhy = p.status === 'broken-deployment' ? 'Deploy 404'
-    : p.status === 'not-web' ? 'Android app' : 'Not deployed';
+    : p.status === 'not-web' ? 'Android app'
+      : p.status === 'closed-source' ? 'Private app' : 'Not deployed';
 
   const live = liveOn
     ? `<a class="pact" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${svg('live')}Live site</a>`
     : `<span class="pact off" aria-disabled="true">${svg('live')}${esc(liveWhy)}</span>`;
 
   const source = p.private
-    ? `<span class="pact off" aria-disabled="true">${svg('github')}Private</span>`
+    ? `<span class="pact off" aria-disabled="true">${svg('github')}Closed source</span>`
     : `<a class="pact" href="${repo}" target="_blank" rel="noopener noreferrer">${svg('github')}Source</a>`;
 
   return `<div class="pacts">${live}${source}</div>`;
@@ -52,8 +54,8 @@ function card(p, i) {
     : `<div class="noshot"><span>${esc(p.title)}</span><small>${esc(label)}</small></div>`;
 
   return `
-    <article class="pcard">
-      <div class="pshot">${shot}<span class="pno">${String(i + 1).padStart(2, '0')}</span></div>
+    <article class="pcard"${p.deployUrl || p.site ? ` data-open="${p.deployUrl || p.site}"` : ''}>
+      <div class="pshot">${shot}</div>
       <div class="pbody">
         <div class="phead">
           <h3>${esc(p.title)}</h3>
@@ -63,21 +65,22 @@ function card(p, i) {
         <div class="tags">
           ${p.lang ? `<span class="tag lang">${esc(p.lang)}</span>` : ''}
           ${p.license ? `<span class="tag">${esc(p.license)}</span>` : ''}
-          ${p.private ? '<span class="tag lock">private repo</span>' : ''}
-          ${p.draft ? '<span class="tag draft">description draft</span>' : ''}
+          ${p.wip ? '<span class="tag wip">in progress</span>' : ''}
+          ${p.private ? '<span class="tag lock">closed source</span>' : ''}
         </div>
         <div class="pfoot">
-          ${p.status === 'live' && p.deployUrl
-            ? `<a class="pqr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone" title="Scan or click to open ${esc(p.title)}">${qr[p.name] || ''}</a>`
+          ${(p.deployUrl || p.site) && qr[p.name]
+            ? `<a class="pqr" href="${p.deployUrl || p.site}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone" title="Scan or click to open ${esc(p.title)}">${qr[p.name]}</a>`
             : ''}
           <div class="pstack">
             ${actions(p, repo)}
-            <small class="phost">${p.deployUrl
+            <small class="phost">${p.private ? 'not public' : p.deployUrl
               ? esc(p.deployUrl.replace(/^https:\/\//, '').replace(/\/$/, '')) + (p.host ? ` · ${esc(p.host)}` : '')
               : `github.com/nvkudva/${esc(p.name)}`}</small>
           </div>
         </div>
       </div>
+      <span class="pno">${String(i + 1).padStart(2, '0')}</span>
     </article>`;
 }
 

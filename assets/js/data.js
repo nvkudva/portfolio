@@ -119,18 +119,18 @@ export const platforms = [
    where `draft: true` still marks an inference. */
 export const projects = [
   {
-    name: 'SmartFin', title: 'SmartFin', lang: 'TypeScript', updated: '2026-08-27',
-    private: true, status: 'live',
-    deployUrl: 'https://smartfin.nvkudva.workers.dev',
-    shot: '/public/shots/smartfin.jpg',
-    desc: 'Impact intelligence for financial teams. Role-based workspaces — relationship manager, analyst, auditor — each seeing the same portfolio through the lens their job actually needs.',
-  },
-  {
     name: 'Smart-News', title: 'SmartNews', lang: 'TypeScript', updated: '2026-09-08',
     status: 'live',
     deployUrl: 'https://smartnews.nvkudva.workers.dev',
     shot: '/public/shots/smart-news.jpg',
     desc: 'A news reader that clusters one story across every outlet covering it — eight sources collapsed into a single card with a neutral summary, filtered by locality rather than by outrage.',
+  },
+  {
+    name: 'WaveKey', title: 'WaveKey', lang: 'Kotlin', updated: '2026-09-07',
+    license: 'GPL-3.0', status: 'not-web',
+    site: 'https://nvkudva.github.io/WaveKey/',
+    shot: '/public/shots/wavekey.jpg',
+    desc: 'Voice-first Android keyboard: HeliBoard’s typing engine with on-device voice intelligence.',
   },
   {
     name: 'bhagavad-geeta', title: 'Bhagavad Geeta', lang: 'TypeScript', updated: '2026-09-07',
@@ -141,39 +141,43 @@ export const projects = [
   },
   {
     name: 'AgentOS', title: 'AgentOS', lang: 'TypeScript', updated: '2026-09-07',
-    status: 'live',
+    wip: true, status: 'live',
     deployUrl: 'https://agentos.nvkudva.workers.dev',
     shot: '/public/shots/agentos.jpg',
     desc: 'Atrium — a desktop for running teams of agents. One room per function, each with a lead agent delegating to the rest, a dock of tools they share, and a single bar you talk to. Twenty agents, and you watch the work land.',
   },
   {
     name: 'gym-budy-claude', title: 'Gym Buddy', lang: 'TypeScript', updated: '2026-09-07',
-    status: 'live',
+    wip: true, status: 'live',
     deployUrl: 'https://gymbuddy-600845087494.us-west1.run.app/',
     host: 'Google Cloud Run',
     shot: '/public/shots/gym-buddy.jpg',
     desc: 'AI-powered gym exercise tracker with a glass UI, personalized weekly plans via Gemini, and an AI coach chatbot.',
   },
   {
-    name: 'AI-Doctor', title: 'CityCare — AI Doctor', lang: 'TypeScript', updated: '2026-09-08',
-    status: 'live',
-    deployUrl: 'https://ai-doctor-8ai.pages.dev',
+    name: 'SmartFin', title: 'SmartFin', lang: 'TypeScript', updated: '2026-08-27',
+    private: true, status: 'closed-source',
+    shot: '/public/shots/smartfin.jpg',
+    desc: 'Impact intelligence for financial teams. Role-based workspaces — relationship manager, analyst, auditor — each seeing the same portfolio through the lens their job actually needs.',
+  },
+  {
+    name: 'AI-Doctor', title: 'AI Doctor', lang: 'TypeScript', updated: '2026-09-08',
+    wip: true, status: 'live',
+    deployUrl: 'https://aidoctor.nvkudva.workers.dev',
     shot: '/public/shots/ai-doctor.jpg',
     desc: 'A hospital-branded virtual visit. No intake forms — you talk to Dr. Mira, and a licensed doctor reviews every plan before it reaches the patient.',
   },
   {
-    name: 'Sahay', title: 'Sahay', lang: 'TypeScript', updated: '2026-09-08',
-    status: 'no-deployment', draft: true,
-    desc: 'An assistant built around help-seeking — Sahay is Sanskrit for support.',
-  },
-  {
-    name: 'SuperVoiceBoard', title: 'SuperVoiceBoard', lang: 'Kotlin', updated: '2026-09-07',
-    license: 'GPL-3.0', status: 'not-web',
-    desc: 'Voice-first Android keyboard: HeliBoard’s typing engine with on-device voice intelligence.',
+    name: 'Maga-Lang', title: 'MagaLang', lang: 'JavaScript', updated: '2026-09-07',
+    wip: true, status: 'live',
+    deployUrl: 'https://nvkudva.github.io/Maga-Lang/',
+    shot: '/public/shots/maga-lang.jpg',
+    desc: 'A toy programming language with Kannada keywords, and a zero-build browser playground for writing and running it — `helu maga` instead of `print`.',
   },
   {
     name: 'ask-my-brain', title: 'Ask My Brain', lang: 'HTML', updated: '2026-09-07',
-    status: 'no-deployment', draft: true,
+    wip: true, status: 'no-deployment', draft: true,
+    shot: '/public/shots/ask-my-brain.jpg',
     desc: 'A personal RAG surface — ask questions against your own accumulated notes and documents.',
   },
 ];

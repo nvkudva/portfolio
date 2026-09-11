@@ -201,6 +201,13 @@ document.addEventListener('click', (e) => {
     return;
   }
 
+  /* the card itself opens the live app; inner links keep their own targets */
+  const openable = e.target.closest('[data-open]');
+  if (openable && !e.target.closest('a,button')) {
+    window.location.href = openable.dataset.open;
+    return;
+  }
+
   const a = e.target.closest('a[data-link]');
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
   const path = new URL(a.href).pathname;

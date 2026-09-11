@@ -5,7 +5,7 @@ import QRCode from 'qrcode';
 import { writeFileSync } from 'node:fs';
 import { projects } from '../assets/js/data.js';
 
-const live = projects.filter((p) => p.deployUrl);
+const live = projects.filter((p) => p.deployUrl || p.site);
 
 /* `currentColor` on the modules lets the code re-tint with the active persona
    instead of shipping a separate image per theme. */
@@ -28,8 +28,8 @@ async function toSvg(url) {
 
 const entries = [];
 for (const p of live) {
-  entries.push(`  ${JSON.stringify(p.name)}: ${JSON.stringify(await toSvg(p.deployUrl))},`);
-  console.log(`${p.name.padEnd(18)} -> ${p.deployUrl}`);
+  entries.push(`  ${JSON.stringify(p.name)}: ${JSON.stringify(await toSvg(p.deployUrl || p.site))},`);
+  console.log(`${p.name.padEnd(18)} -> ${p.deployUrl || p.site}`);
 }
 
 writeFileSync(

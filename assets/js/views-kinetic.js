@@ -20,10 +20,9 @@ export const home = () => `
   <section class="k-hero">
     <div class="k-tagline">${esc(profile.role)}</div>
     <h1>
-      <span class="k-slide"><span>Builds the</span></span>
-      <span class="k-slide"><span class="k-out" style="animation-delay:.08s">platforms</span></span>
-      <span class="k-slide"><span style="animation-delay:.16s">others <span class="k-fill">ship</span></span></span>
-      <span class="k-slide"><span class="k-fill" style="animation-delay:.24s">on.</span></span>
+      <span class="k-slide"><span>The</span></span>
+      <span class="k-slide"><span class="k-out" style="animation-delay:.08s">Hands on</span></span>
+      <span class="k-slide"><span class="k-fill" style="animation-delay:.16s">AI Leader</span></span>
     </h1>
 
     <div class="k-herofoot" style="grid-template-columns:minmax(0,1fr)">
@@ -110,10 +109,11 @@ export const buildingView = () => `
     <div class="k-rail">
       ${projects.map((p, i) => {
         const st = { live:['Live','ok'], 'broken-deployment':['Deploy broken','warn'],
-                     'no-deployment':['Not deployed','off'], 'not-web':['Android app','off'] }[p.status]
+                     'no-deployment':['Not deployed','off'], 'not-web':['Android app','off'],
+                     'closed-source':['Closed source','off'] }[p.status]
                    || ['Not deployed','off'];
         return `
-        <article class="k-repo">
+        <article class="k-repo"${p.deployUrl || p.site ? ` data-open="${p.deployUrl || p.site}"` : ''}>
           <div class="k-shot">
             ${p.shot
               ? `<img src="${p.shot}" alt="Screenshot of ${esc(p.title)}" loading="lazy" decoding="async" width="1100" height="688">`
@@ -124,19 +124,19 @@ export const buildingView = () => `
           <p>${esc(p.desc)}</p>
           <div class="k-stack">
             <i class="${st[1]}">${esc(st[0])}</i>
-            ${p.private ? '<i>\u{1F512} private</i>' : ''}
-            ${p.draft ? '<i>draft copy</i>' : ''}
+            ${p.wip ? '<i class="wip">in progress</i>' : ''}
+            ${p.private ? '<i>\u{1F512} closed source</i>' : ''}
           </div>
           <div class="k-foot">
-            ${p.status === 'live' && p.deployUrl
-              ? `<a class="k-qr" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone">${qr[p.name] || ''}</a>`
+            ${(p.deployUrl || p.site) && qr[p.name]
+              ? `<a class="k-qr" href="${p.deployUrl || p.site}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.title)} on your phone">${qr[p.name]}</a>`
               : ''}
             <div class="k-acts2">
               ${p.status === 'live' && p.deployUrl
                 ? `<a class="k-act live" href="${p.deployUrl}" target="_blank" rel="noopener noreferrer">${svg('live')}Live</a>`
-                : `<span class="k-act off">${svg('live')}${esc(p.status === 'broken-deployment' ? 'Deploy 404' : p.status === 'not-web' ? 'Android' : 'Not live')}</span>`}
+                : `<span class="k-act off">${svg('live')}${esc(p.status === 'broken-deployment' ? 'Deploy 404' : p.status === 'not-web' ? 'Android' : p.status === 'closed-source' ? 'Private app' : 'Not live')}</span>`}
               ${p.private
-                ? `<span class="k-act off">${svg('github')}Private</span>`
+                ? `<span class="k-act off">${svg('github')}Closed source</span>`
                 : `<a class="k-act" href="https://github.com/nvkudva/${p.name}" target="_blank" rel="noopener noreferrer">${svg('github')}Source</a>`}
             </div>
           </div>

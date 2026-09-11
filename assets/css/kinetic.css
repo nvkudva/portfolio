@@ -113,19 +113,20 @@
 /* ---------------------------------------------------------- type */
 [data-layout="kinetic"] main{padding:0; max-width:none}
 [data-layout="kinetic"] section{padding:56px 0; border-bottom:0}
+[data-layout="kinetic"] .k-hero + section{padding-top:16px}
 .k-hero{padding:116px 0 60px !important; position:relative}
 .pane + .pane .k-hero{padding-top:48px !important}
 .pane + .pane > section:first-child{padding-top:48px}
 .k-tagline{font-family:var(--kmono); font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--hot); margin-bottom:22px; display:flex; gap:14px; align-items:center}
 .k-tagline::after{content:""; height:1px; width:78px; background:currentColor; opacity:.5}
 [data-layout="kinetic"] h1{
-  font-family:var(--kdisp); font-weight:800; font-size:clamp(58px,13vw,188px);
+  font-family:var(--kdisp); font-weight:800; font-size:clamp(50px,11vw,160px);
   line-height:.82; letter-spacing:-.015em; margin:0; text-transform:uppercase; color:var(--kink);
 }
 .k-out{color:transparent; -webkit-text-stroke:1.5px var(--hot-2)}
 .k-fill{color:var(--hot)}
-.k-slide{display:block; overflow:hidden}
-.k-slide > span{display:block; animation:k-slide 1.05s var(--kease) both}
+.k-slide{display:block; overflow:hidden; margin-top:-.12em}
+.k-slide > span{display:block; padding-top:.12em; animation:k-slide 1.05s var(--kease) both}
 @keyframes k-slide{from{transform:translateY(102%)} to{transform:none}}
 .k-up{animation:k-up .9s var(--kease) both}
 @keyframes k-up{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
@@ -236,7 +237,9 @@
 [data-layout="kinetic"] .sitefoot .swap-b[aria-pressed="true"]{color:var(--hot); border-bottom-color:var(--hot)}
 
 @media (max-width:900px){
-  .k-nav ul{display:none}
+  .k-nav ul{order:6; width:100%; margin:2px 0 0; gap:18px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px}
+  .k-nav ul::-webkit-scrollbar{display:none}
+  .k-nav ul li{flex:0 0 auto}
   .k-nav{flex-wrap:wrap}
   .k-hail{order:5; width:100%; gap:10px; font-size:9px}
   .k-nav{gap:10px}
@@ -267,6 +270,8 @@
 }
 .k-stack i.ok{color:var(--hot); border-color:color-mix(in oklab,var(--hot) 45%,transparent)}
 .k-stack i.warn{color:var(--hot-2); border-color:color-mix(in oklab,var(--hot-2) 45%,transparent)}
+.k-repo[data-open]{cursor:pointer}
+.k-stack i.wip{color:var(--hot-2); border-color:color-mix(in oklab,var(--hot-2) 45%,transparent)}
 .k-qr{
   width:66px; height:66px; flex:none; padding:6px; border-radius:8px;
   border:1px solid var(--edge); background:var(--void); color:var(--kink); display:block;
